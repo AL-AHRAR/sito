@@ -129,11 +129,145 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 24px;
-            padding: 28px 20px 40px;
+            padding: 32px 24px 48px;
             max-width: 1400px;
             margin: 0 auto;
             position: relative;
         }
+        .page-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(0, .75fr);
+            gap: 26px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 26px;
+            padding: 32px;
+            box-shadow: 0 14px 40px var(--shadow-color);
+            backdrop-filter: saturate(160%) blur(22px);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px 360px at 90% 10%, rgba(10,132,255,0.18), transparent 70%),
+                        radial-gradient(500px 320px at 0% 90%, rgba(52,199,89,0.16), transparent 70%);
+            opacity: .9;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        .hero-content { position: relative; z-index: 1; display: grid; gap: 22px; }
+        .hero-title { font-size: clamp(2rem, 2.6vw, 2.6rem); font-weight: 800; line-height: 1.3; }
+        .hero-subtitle { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+        .hero-actions .btn { padding-inline: 20px; }
+        .hero-tip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 14px; background: rgba(10,132,255,0.12); border: 1px solid rgba(10,132,255,0.25); color: var(--ios-blue); font-weight: 600; font-size: .95rem; }
+        .hero-tip i { background: #fff; color: var(--ios-blue); width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(10,132,255,0.25); }
+        .hero-metrics { position: relative; z-index: 1; display: grid; gap: 16px; }
+        .metric-card {
+            background: rgba(255,255,255,0.78);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 12px 32px rgba(15,23,42,0.08);
+            display: grid;
+            gap: 6px;
+        }
+        body.theme-dark .metric-card { background: rgba(17,24,39,0.75); border-color: var(--glass-border); }
+        .metric-label { color: var(--text-secondary); font-weight: 600; }
+        .metric-value { font-size: 1.8rem; font-weight: 800; letter-spacing: .6px; }
+        .metric-trend { display: inline-flex; align-items: center; gap: 6px; color: var(--ios-green); font-weight: 700; font-size: .9rem; }
+        .metric-trend.danger { color: var(--ios-red); }
+        .metric-footnote { font-size: .85rem; color: var(--text-secondary); }
+        .generator-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.5));
+            position: sticky;
+            top: 72px;
+            z-index: 3;
+        }
+        body.theme-dark .generator-toolbar { background: linear-gradient(180deg, rgba(17,24,39,0.8), rgba(17,24,39,0.55)); border-bottom-color: var(--glass-border); }
+        .toolbar-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .generator-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 24px; padding: 24px; }
+        .generator-main { display: grid; gap: 18px; }
+        .insight-panel {
+            display: grid;
+            gap: 18px;
+            background: rgba(255,255,255,0.72);
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 28px rgba(15,23,42,0.08);
+            height: fit-content;
+            align-self: start;
+        }
+        body.theme-dark .insight-panel { background: rgba(17,24,39,0.65); border-color: var(--glass-border); box-shadow: 0 12px 28px rgba(0,0,0,0.45); }
+        .insight-section { display: grid; gap: 10px; }
+        .insight-section h3 { display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+        .template-list { display: grid; gap: 10px; }
+        .template-card {
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid rgba(10,132,255,0.18);
+            background: rgba(10,132,255,0.08);
+            display: grid;
+            gap: 8px;
+        }
+        .template-card strong { color: var(--ios-blue); font-size: 1rem; }
+        .template-card p { color: var(--text-secondary); font-size: .9rem; line-height: 1.5; }
+        .template-card button { justify-self: start; }
+        body.theme-dark .template-card { background: rgba(10,132,255,0.12); border-color: rgba(96,165,250,0.25); }
+        .insight-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .mini-stat {
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.8);
+            display: grid;
+            gap: 4px;
+        }
+        .mini-stat span { font-size: .85rem; color: var(--text-secondary); }
+        .mini-stat strong { font-size: 1.1rem; }
+        body.theme-dark .mini-stat { background: rgba(17,24,39,0.6); border-color: var(--glass-border); }
+        .progress-track { width: 100%; height: 10px; border-radius: 999px; background: rgba(0,0,0,0.06); overflow: hidden; position: relative; }
+        .progress-fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, #0A84FF, #34C759); transition: width .25s ease; }
+        .progress-meta { font-size: .9rem; color: var(--text-secondary); font-weight: 600; }
+        .prep-checklist { list-style: none; display: grid; gap: 6px; }
+        .prep-checklist li { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--text-secondary); }
+        .prep-checklist li i { color: var(--text-secondary); transition: color .2s ease; }
+        .prep-checklist li.done { color: var(--ios-green); font-weight: 600; }
+        .prep-checklist li.done i { color: var(--ios-green); }
+        .recent-plan-card {
+            border-radius: 16px;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 14px;
+            display: grid;
+            gap: 8px;
+        }
+        .recent-plan-card .title { font-weight: 800; font-size: 1rem; }
+        .recent-plan-card .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+        .recent-plan-card .meta .tag { font-size: .8rem; }
+        .recent-plan-card .empty { color: var(--text-secondary); font-size: .9rem; text-align: center; padding: 10px 0; }
+        body.theme-dark .recent-plan-card { background: rgba(17,24,39,0.6); border-color: var(--glass-border); }
+        .result-summary { display: none; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
+        .summary-chip { display: grid; gap: 4px; padding: 14px; border-radius: 16px; background: rgba(0,122,255,0.08); border: 1px solid rgba(0,122,255,0.16); }
+        .summary-chip span { font-size: .85rem; color: var(--text-secondary); }
+        .summary-chip strong { font-size: 1.2rem; color: var(--ios-blue); }
+        body.theme-dark .summary-chip { background: rgba(10,132,255,0.14); border-color: rgba(96,165,250,0.22); }
+        body.focus-mode .insight-panel { display: none; }
+        body.focus-mode .generator-layout { grid-template-columns: 1fr; }
+        body.focus-mode .generator-toolbar { box-shadow: 0 12px 32px rgba(15,23,42,0.12); border-radius: 0 0 18px 18px; }
+        body.focus-mode #focusModeToggle { background: linear-gradient(180deg, #5856D6, #7C3AED); color: #fff; }
+        .form-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
+        .form-note { color: var(--text-secondary); font-size: .9rem; display: flex; align-items: center; gap: 8px; }
+        .form-note i { color: var(--ios-blue); }
         .views { position: relative; min-height: 60vh; height: auto; transition: height .35s ease; }
         /* Ensure only the active view can receive pointer events and sits on top */
         .view { position: absolute; inset: 0; opacity: 0; transform: translateY(20px); transition: opacity .35s ease, transform .35s ease; pointer-events: none; visibility: hidden; z-index: 0; }
@@ -477,6 +611,37 @@
     </header>
 
     <main class="page">
+        <section class="page-header animate-in">
+            <div class="hero-content">
+                <div>
+                    <div class="hero-title">صمّم رحلتك التعليمية المدعومة بالذكاء الاصطناعي</div>
+                    <p class="hero-subtitle">حوّل أي هدف تعليمي إلى خطة منظمة بالكامل مع حلقات، اختبارات ومحادثة ذكية ترافقك خطوة بخطوة. المنصة تتابع نشاطك وتقدم لك مقترحات فورية لتسريع التقدم.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" id="heroStartPlan"><i class="fa-solid fa-wand-magic-sparkles"></i> ابدأ خطة جديدة الآن</button>
+                        <button class="btn btn-secondary" id="heroBrowseHistory"><i class="fa-solid fa-clock-rotate-left"></i> تصفّح مخرجاتك السابقة</button>
+                        <button class="btn btn-secondary" id="heroOpenChat"><i class="fa-solid fa-comments"></i> اسأل المساعد</button>
+                    </div>
+                    <div class="hero-tip" id="dailyTip"><i class="fa-solid fa-lightbulb"></i><span>نصيحة يومية ستظهر هنا.</span></div>
+                </div>
+            </div>
+            <div class="hero-metrics">
+                <div class="metric-card">
+                    <span class="metric-label">عدد الخطط المكتملة</span>
+                    <span class="metric-value" id="statPlansCount">0</span>
+                    <span class="metric-footnote">محفوظة في سجل إنجازاتك</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">جلسات التعلم المقترحة</span>
+                    <span class="metric-value" id="statEpisodesCount">0</span>
+                    <span class="metric-footnote">موزعة على الحلقات والاختبارات</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">أيام الاستمرارية</span>
+                    <span class="metric-value" id="statStreak">0</span>
+                    <span class="metric-trend" id="statTrend"><i class="fa-solid fa-arrow-trend-up"></i> استمرارية جديدة</span>
+                </div>
+            </div>
+        </section>
         <div class="views">
             <section id="view-generator" class="view view-active">
                 <!-- Full-screen generator editor -->
@@ -486,67 +651,105 @@
                         <h2>أنشئ خطتك التعليمية بسهولة</h2>
                     </div>
                     <div class="card-body">
-                        <div class="generator-actions">
-                            <div class="left-actions">
+                        <div class="generator-toolbar">
+                            <div class="toolbar-group">
                                 <button type="button" class="btn btn-secondary" id="openDrawer"><i class="fa-solid fa-sliders"></i> إعدادات متقدمة</button>
+                                <button type="button" class="btn btn-secondary" id="focusModeToggle"><i class="fa-solid fa-eye-slash"></i> وضع التركيز</button>
+                                <button type="button" class="btn btn-secondary" onclick="openTips()"><i class="fa-solid fa-lightbulb"></i> نصائح سريعة</button>
                             </div>
-                            <div class="right-actions">
-                                <button type="button" class="btn btn-secondary" onclick="fillExample()"><i class="fa-regular fa-lightbulb"></i> مثال سريع</button>
+                            <div class="toolbar-group">
+                                <button type="button" class="btn btn-secondary" onclick="fillExample()"><i class="fa-regular fa-lightbulb"></i> مثال جاهز</button>
                                 <button type="submit" form="learningForm" class="btn btn-primary"><i class="fa-solid fa-magic"></i> ابدأ إنشاء الخطة</button>
                             </div>
                         </div>
-                        <form id="learningForm" class="generator-editor">
-                            <div class="form-group">
-                                <label for="subject">اكتب ما تريد تعلمه</label>
-                                <textarea id="subject" class="input big-input" placeholder="اكتب الهدف التعليمي والتفاصيل المهمة… مثال: تعلم تطوير واجهات ويب تفاعلية باستخدام React من الصفر حتى مشروع نهائي" required></textarea>
+                        <div class="generator-layout">
+                            <div class="generator-main">
+                                <form id="learningForm" class="generator-editor">
+                                    <div class="form-group">
+                                        <label for="subject">اكتب ما تريد تعلمه</label>
+                                        <textarea id="subject" class="input big-input" placeholder="اكتب الهدف التعليمي والتفاصيل المهمة… مثال: تعلم تطوير واجهات ويب تفاعلية باستخدام React من الصفر حتى مشروع نهائي" required></textarea>
+                                    </div>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="difficulty">مستوى الصعوبة</label>
+                                            <select id="difficulty" class="input" required>
+                                                <option value="">اختر المستوى</option>
+                                                <option value="مبتدئ">مبتدئ</option>
+                                                <option value="متوسط">متوسط</option>
+                                                <option value="متقدم">متقدم</option>
+                                                <option value="خبير">خبير</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="level">المستوى التعليمي</label>
+                                            <select id="level" class="input" required>
+                                                <option value="">اختر المستوى</option>
+                                                <option value="ابتدائي">ابتدائي</option>
+                                                <option value="متوسط">متوسط</option>
+                                                <option value="ثانوي">ثانوي</option>
+                                                <option value="جامعي">جامعي</option>
+                                                <option value="دراسات عليا">دراسات عليا</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="episodes-header">
+                                            <label>عدد الحلقات التعليمية</label>
+                                            <div class="episodes-toggle">
+                                                <span>تلقائي</span>
+                                                <label class="ios-switch" aria-label="تحديد تلقائي لعدد الحلقات">
+                                                    <input type="checkbox" id="autoMode" checked>
+                                                    <span class="sr-only">تحديد تلقائي لعدد الحلقات</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="episodes-row" style="margin-top:8px;">
+                                            <input type="range" id="episodesRange" min="1" max="20" value="6" disabled>
+                                            <span class="pill" id="episodesValue">تلقائي</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-footer">
+                                        <div class="form-note"><i class="fa-regular fa-floppy-disk"></i> يتم حفظ مدخلاتك تلقائياً.</div>
+                                        <div class="toolbar-group">
+                                            <button type="button" class="btn btn-secondary" onclick="resetForm()"><i class="fa-solid fa-rotate"></i> إعادة التعيين</button>
+                                            <button type="submit" class="btn btn-primary" id="startPlanBtn"><i class="fa-solid fa-magic"></i> توليد الخطة الآن</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="difficulty">مستوى الصعوبة</label>
-                                    <select id="difficulty" class="input" required>
-                                        <option value="">اختر المستوى</option>
-                                        <option value="مبتدئ">مبتدئ</option>
-                                        <option value="متوسط">متوسط</option>
-                                        <option value="متقدم">متقدم</option>
-                                        <option value="خبير">خبير</option>
-                                    </select>
+                            <aside class="insight-panel">
+                                <div class="insight-section">
+                                    <h3><i class="fa-solid fa-bolt"></i> البدء السريع</h3>
+                                    <div class="template-list" id="templateList"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="level">المستوى التعليمي</label>
-                                    <select id="level" class="input" required>
-                                        <option value="">اختر المستوى</option>
-                                        <option value="ابتدائي">ابتدائي</option>
-                                        <option value="متوسط">متوسط</option>
-                                        <option value="ثانوي">ثانوي</option>
-                                        <option value="جامعي">جامعي</option>
-                                        <option value="دراسات عليا">دراسات عليا</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="episodes-header">
-                                    <label>عدد الحلقات التعليمية</label>
-                                    <div class="episodes-toggle">
-                                        <span>تلقائي</span>
-                                        <label class="ios-switch" aria-label="تحديد تلقائي لعدد الحلقات">
-                                            <input type="checkbox" id="autoMode" checked>
-                                            <span class="sr-only">تحديد تلقائي لعدد الحلقات</span>
-                                        </label>
+                                <div class="insight-section">
+                                    <h3><i class="fa-solid fa-chart-line"></i> نشاطك المختصر</h3>
+                                    <div class="insight-metrics">
+                                        <div class="mini-stat"><span>أحدث موضوع</span><strong id="statLastSubject">—</strong></div>
+                                        <div class="mini-stat"><span>متوسط الحلقات</span><strong id="statAvgEpisodes">0</strong></div>
+                                        <div class="mini-stat"><span>اختبارات منجزة</span><strong id="statQuizzesCount">0</strong></div>
+                                        <div class="mini-stat"><span>ساعات التعلّم</span><strong id="statLearningHours">0</strong></div>
                                     </div>
                                 </div>
-                                <div class="episodes-row" style="margin-top:8px;">
-                                    <input type="range" id="episodesRange" min="1" max="20" value="6" disabled>
-                                    <span class="pill" id="episodesValue">تلقائي</span>
+                                <div class="insight-section">
+                                    <h3><i class="fa-solid fa-list-check"></i> جاهزية التوليد</h3>
+                                    <div class="progress-track"><div class="progress-fill" id="formProgressBar"></div></div>
+                                    <div class="progress-meta" id="formProgressLabel">أكمل البيانات الأساسية للانطلاق.</div>
+                                    <ul class="prep-checklist">
+                                        <li id="checkSubject"><i class="fa-regular fa-circle"></i><span>تحديد هدف التعلّم</span></li>
+                                        <li id="checkDifficulty"><i class="fa-regular fa-circle"></i><span>اختيار مستوى الصعوبة</span></li>
+                                        <li id="checkLevel"><i class="fa-regular fa-circle"></i><span>تحديد المستوى الدراسي</span></li>
+                                        <li id="checkEpisodes"><i class="fa-regular fa-circle"></i><span>تثبيت عدد الحلقات</span></li>
+                                    </ul>
                                 </div>
-                            </div>
-                            <div class="generator-actions">
-                                <div class="left-actions"></div>
-                                <div class="right-actions">
-                                    <button type="button" class="btn btn-secondary" onclick="fillExample()"><i class="fa-regular fa-lightbulb"></i> مثال سريع</button>
-                                    <button type="submit" class="btn btn-primary" id="startPlanBtn"><i class="fa-solid fa-magic"></i> ابدأ إنشاء الخطة</button>
+                                <div class="insight-section">
+                                    <h3><i class="fa-solid fa-book-open-reader"></i> آخر خطة</h3>
+                                    <div class="recent-plan-card" id="recentPlanPreview">
+                                        <div class="empty">لم تقم بإنشاء أي خطة بعد.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </aside>
+                        </div>
                     </div>
                 </section>
 
@@ -571,6 +774,7 @@
                         <h2>مخرجات التوليد</h2>
                     </div>
                     <div class="card-body">
+                        <div class="result-summary" id="resultSummary"></div>
                         <div class="tabs">
                             <button class="tab-btn tab-active" data-tab="plan"><i class="fa-solid fa-list"></i> الخطة</button>
                             <button class="tab-btn" data-tab="episodes"><i class="fa-solid fa-clapperboard"></i> الحلقات</button>
@@ -930,6 +1134,205 @@
         const refsModal = document.getElementById('refsModal');
         const refsList = document.getElementById('refsList');
         const refChips = document.getElementById('refChips');
+        const templateList = document.getElementById('templateList');
+        const statPlansCountEl = document.getElementById('statPlansCount');
+        const statEpisodesCountEl = document.getElementById('statEpisodesCount');
+        const statStreakEl = document.getElementById('statStreak');
+        const statTrendEl = document.getElementById('statTrend');
+        const statLastSubjectEl = document.getElementById('statLastSubject');
+        const statAvgEpisodesEl = document.getElementById('statAvgEpisodes');
+        const statQuizzesCountEl = document.getElementById('statQuizzesCount');
+        const statLearningHoursEl = document.getElementById('statLearningHours');
+        const resultSummary = document.getElementById('resultSummary');
+        const recentPlanPreview = document.getElementById('recentPlanPreview');
+        const dailyTip = document.getElementById('dailyTip');
+        const formProgressBar = document.getElementById('formProgressBar');
+        const formProgressLabel = document.getElementById('formProgressLabel');
+        const checkSubject = document.getElementById('checkSubject');
+        const checkDifficulty = document.getElementById('checkDifficulty');
+        const checkLevel = document.getElementById('checkLevel');
+        const checkEpisodes = document.getElementById('checkEpisodes');
+        const focusModeToggle = document.getElementById('focusModeToggle');
+        const heroStartPlan = document.getElementById('heroStartPlan');
+        const heroBrowseHistory = document.getElementById('heroBrowseHistory');
+        const heroOpenChat = document.getElementById('heroOpenChat');
+        const subjectInput = document.getElementById('subject');
+        const difficultySelect = document.getElementById('difficulty');
+        const levelSelect = document.getElementById('level');
+
+        const heroTips = [
+            'جرّب وضع التركيز لتكتب هدفك التعليمي بعيداً عن أي مشتتات.',
+            'استخدم القوالب الجاهزة كنقطة انطلاق ثم عدّل التفاصيل بما يناسبك.',
+            'حدد بوضوح مهاراتك الحالية في خانة المستوى لتحصل على خطة أدق.',
+            'شارك الخطة مع زملائك بصيغة Markdown أو PDF من قائمة الإجراءات.',
+            'أعد زيارة السجل للاستفادة من الدورات السابقة كمراجع للمحادثة.'
+        ];
+
+        const quickTemplates = [
+            {
+                title: 'مسار مطوّر واجهات ويب حديث',
+                description: 'تعلّم أساسيات HTML وCSS ثم انتقل إلى JavaScript وReact مع مشروع نهائي تفاعلي.',
+                subject: 'تعلّم تطوير واجهات ويب حديثة تشمل HTML وCSS وJavaScript وإطار React مع بناء لوحة تحكم تفاعلية.',
+                difficulty: 'متوسط',
+                level: 'جامعي',
+                auto: true
+            },
+            {
+                title: 'تحليل البيانات ببايثون',
+                description: 'من تنظيف البيانات حتى بناء لوحات معلومات باستخدام Pandas وMatplotlib.',
+                subject: 'إتقان تحليل البيانات باستخدام Python من خلال تعلم Pandas وNumPy وMatplotlib وبناء لوحة معلومات تفاعلية.',
+                difficulty: 'متوسط',
+                level: 'دراسات عليا',
+                auto: false,
+                episodes: 9
+            },
+            {
+                title: 'أساسيات الذكاء الاصطناعي التربوي',
+                description: 'اكتشف كيف يمكن دمج الذكاء الاصطناعي في التعليم وتصميم تجارب تعلم مخصصة.',
+                subject: 'دورة متكاملة حول تصميم تجارب تعلم مخصصة باستخدام الذكاء الاصطناعي وأدوات التحليلات التعليمية.',
+                difficulty: 'متقدم',
+                level: 'جامعي',
+                auto: true
+            },
+            {
+                title: 'مسار تعلم التصميم UX/UI',
+                description: 'من فهم سلوك المستخدمين إلى بناء واجهات احترافية باستخدام أدوات تصميم حديثة.',
+                subject: 'برنامج متكامل لتعلم مبادئ تصميم تجربة المستخدم وواجهة المستخدم مع تطبيق عملي باستخدام Figma.',
+                difficulty: 'مبتدئ',
+                level: 'ثانوي',
+                auto: false,
+                episodes: 8
+            }
+        ];
+
+        let heroTipIndex = Math.floor(Math.random() * heroTips.length);
+        function updateHeroTipText() {
+            if (!dailyTip || !heroTips.length) return;
+            const span = dailyTip.querySelector('span');
+            const tip = heroTips[heroTipIndex % heroTips.length];
+            if (span) span.textContent = tip;
+            heroTipIndex++;
+        }
+
+        function renderTemplates() {
+            if (!templateList) return;
+            templateList.innerHTML = quickTemplates.map((tpl, index) => `
+                <div class="template-card">
+                    <strong>${escapeHtml(tpl.title)}</strong>
+                    <p>${escapeHtml(tpl.description)}</p>
+                    <div class="tags">
+                        <span class="tag"><i class="fa-solid fa-signal"></i> ${escapeHtml(tpl.difficulty)}</span>
+                        <span class="tag"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(tpl.level)}</span>
+                        <span class="tag"><i class="fa-solid fa-list-ol"></i> ${tpl.auto ? 'تلقائي' : `${tpl.episodes || 6} حلقات`}</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-template="${index}"><i class="fa-solid fa-wand-magic-sparkles"></i> اختيار القالب</button>
+                </div>
+            `).join('');
+        }
+
+        function applyTemplate(index) {
+            const tpl = quickTemplates[index];
+            if (!tpl) return;
+            if (subjectInput) subjectInput.value = tpl.subject || '';
+            if (difficultySelect) difficultySelect.value = tpl.difficulty || '';
+            if (levelSelect) levelSelect.value = tpl.level || '';
+            if (typeof tpl.auto === 'boolean') {
+                autoMode.checked = tpl.auto;
+            }
+            if (typeof tpl.episodes === 'number') {
+                episodesRange.value = String(tpl.episodes);
+            }
+            syncEpisodesUI();
+            updateFormProgress();
+            saveForm();
+            showToast(`تم تحميل قالب ${tpl.title}`);
+            setTimeout(() => subjectInput?.focus(), 100);
+        }
+
+        function syncEpisodesUI() {
+            episodesRange.disabled = autoMode.checked;
+            episodesValue.textContent = autoMode.checked ? 'تلقائي' : episodesRange.value;
+        }
+
+        function toggleChecklistState(el, done) {
+            if (!el) return;
+            el.classList.toggle('done', done);
+            const icon = el.querySelector('i');
+            if (icon) icon.className = done ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+        }
+
+        function updateFormProgress() {
+            if (!formProgressBar || !formProgressLabel) return;
+            const subjectReady = (subjectInput?.value.trim().length || 0) >= 5;
+            const difficultyReady = !!difficultySelect?.value;
+            const levelReady = !!levelSelect?.value;
+            const episodesReady = autoMode.checked || !!episodesRange.value;
+            const totalSteps = 4;
+            const completed = [subjectReady, difficultyReady, levelReady, episodesReady].filter(Boolean).length;
+            const percent = Math.round((completed / totalSteps) * 100);
+            formProgressBar.style.width = percent + '%';
+            formProgressLabel.textContent = percent >= 100 ? 'جاهز تماماً للتوليد!' : `جاهز بنسبة ${percent}% لإطلاق الخطة.`;
+            toggleChecklistState(checkSubject, subjectReady);
+            toggleChecklistState(checkDifficulty, difficultyReady);
+            toggleChecklistState(checkLevel, levelReady);
+            toggleChecklistState(checkEpisodes, episodesReady);
+        }
+
+        function updateResultSummary(item) {
+            if (!resultSummary) return;
+            if (!item) {
+                resultSummary.style.display = 'none';
+                resultSummary.innerHTML = '';
+                return;
+            }
+            const episodesCount = item.plan?.episodes?.length || (item.episodes && item.episodes !== 'تلقائي' ? parseInt(item.episodes, 10) : (item.plan?.episodes?.length || 0));
+            const quizzesCount = item.quizzes?.length || 0;
+            const estimatedHours = episodesCount ? Math.max(1, Math.round((episodesCount * 45) / 60)) : 0;
+            resultSummary.style.display = 'grid';
+            resultSummary.innerHTML = `
+                <div class="summary-chip"><span>الموضوع</span><strong>${escapeHtml(item.subject || 'غير محدد')}</strong></div>
+                <div class="summary-chip"><span>الصعوبة</span><strong>${escapeHtml(item.difficulty || 'غير محددة')}</strong></div>
+                <div class="summary-chip"><span>المستوى</span><strong>${escapeHtml(item.level || 'غير محدد')}</strong></div>
+                <div class="summary-chip"><span>عدد الحلقات</span><strong>${episodesCount || '—'}</strong></div>
+                <div class="summary-chip"><span>اختبارات جاهزة</span><strong>${quizzesCount}</strong></div>
+                <div class="summary-chip"><span>زمن تقديري</span><strong>${estimatedHours ? estimatedHours + ' ساعة' : '—'}</strong></div>
+            `;
+        }
+
+        templateList?.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-template]');
+            if (!btn) return;
+            const index = parseInt(btn.getAttribute('data-template'), 10);
+            applyTemplate(index);
+        });
+
+        focusModeToggle?.addEventListener('click', () => {
+            document.body.classList.toggle('focus-mode');
+            const active = document.body.classList.contains('focus-mode');
+            focusModeToggle.innerHTML = active ? '<i class="fa-solid fa-eye"></i> إنهاء وضع التركيز' : '<i class="fa-solid fa-eye-slash"></i> وضع التركيز';
+            showToast(active ? 'تم تفعيل وضع التركيز' : 'تم إيقاف وضع التركيز');
+        });
+
+        heroStartPlan?.addEventListener('click', () => {
+            switchView('generator');
+            setTimeout(() => subjectInput?.focus(), 160);
+        });
+        heroBrowseHistory?.addEventListener('click', () => {
+            switchView('history');
+            const historySection = document.getElementById('historySection');
+            if (historySection) {
+                window.scrollTo({ top: historySection.offsetTop - 20, behavior: 'smooth' });
+            }
+        });
+        heroOpenChat?.addEventListener('click', () => {
+            switchView('chat');
+            setTimeout(() => focusChatInput(), 160);
+        });
+
+        if (dailyTip) {
+            updateHeroTipText();
+            setInterval(updateHeroTipText, 12000);
+        }
 
         // Views
         function switchView(name) {
@@ -1038,6 +1441,87 @@
         const HISTORY_KEY = 'aiLearnHistory';
         const loadHistory = () => JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
         const saveHistory = (items) => localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
+
+        function calcStreak(items) {
+            if (!items.length) return 0;
+            const dates = [...new Set(items.map(it => {
+                const d = new Date(it.createdAt || Date.now());
+                d.setHours(0, 0, 0, 0);
+                return d.getTime();
+            }))].sort((a, b) => b - a);
+            if (!dates.length) return 0;
+            let streak = 1;
+            for (let i = 1; i < dates.length; i++) {
+                const diff = Math.round((dates[i - 1] - dates[i]) / 86400000);
+                if (diff === 1) streak++;
+                else break;
+            }
+            return streak;
+        }
+
+        function computeUsageStats(items) {
+            const totalPlans = items.length;
+            let totalEpisodes = 0;
+            let totalQuizzes = 0;
+            items.forEach(item => {
+                const episodes = item.plan?.episodes?.length || (item.episodes && item.episodes !== 'تلقائي' ? parseInt(item.episodes, 10) : 0);
+                if (!Number.isNaN(episodes)) totalEpisodes += episodes;
+                totalQuizzes += item.quizzes?.length || 0;
+            });
+            const avgEpisodes = totalPlans ? Math.round(totalEpisodes / totalPlans) : 0;
+            const hours = totalEpisodes ? Math.max(1, Math.round((totalEpisodes * 45) / 60)) : 0;
+            return {
+                totalPlans,
+                totalEpisodes,
+                avgEpisodes,
+                totalQuizzes,
+                hours,
+                lastSubject: items[0]?.subject || '—',
+                streak: calcStreak(items)
+            };
+        }
+
+        function updateUsageStats(items = loadHistory()) {
+            const stats = computeUsageStats(items);
+            if (statPlansCountEl) statPlansCountEl.textContent = String(stats.totalPlans);
+            if (statEpisodesCountEl) statEpisodesCountEl.textContent = String(stats.totalEpisodes);
+            if (statStreakEl) statStreakEl.textContent = String(stats.streak);
+            if (statTrendEl) {
+                if (!stats.totalPlans) {
+                    statTrendEl.classList.add('danger');
+                    statTrendEl.innerHTML = '<i class="fa-solid fa-seedling"></i> ابدأ أول خطة';
+                } else if (stats.streak > 1) {
+                    statTrendEl.classList.remove('danger');
+                    statTrendEl.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> تقدم مستمر';
+                } else {
+                    statTrendEl.classList.add('danger');
+                    statTrendEl.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> جرّب خطة جديدة';
+                }
+            }
+            if (statLastSubjectEl) statLastSubjectEl.textContent = stats.lastSubject || '—';
+            if (statAvgEpisodesEl) statAvgEpisodesEl.textContent = String(stats.avgEpisodes || 0);
+            if (statQuizzesCountEl) statQuizzesCountEl.textContent = String(stats.totalQuizzes || 0);
+            if (statLearningHoursEl) statLearningHoursEl.textContent = stats.hours ? `${stats.hours}+` : '0';
+        }
+
+        function updateRecentPlanPreview(items = loadHistory()) {
+            if (!recentPlanPreview) return;
+            if (!items.length) {
+                recentPlanPreview.innerHTML = '<div class="empty">لم تقم بإنشاء أي خطة بعد.</div>';
+                return;
+            }
+            const last = items[0];
+            const episodes = last.plan?.episodes?.length || (last.episodes && last.episodes !== 'تلقائي' ? parseInt(last.episodes, 10) : 0) || 0;
+            recentPlanPreview.innerHTML = `
+                <div class="title">${escapeHtml(last.subject || 'خطة بدون عنوان')}</div>
+                <div class="meta">
+                    <span class="tag"><i class="fa-solid fa-signal"></i> ${escapeHtml(last.difficulty || 'غير محدد')}</span>
+                    <span class="tag"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(last.level || 'غير محدد')}</span>
+                    <span class="tag"><i class="fa-solid fa-list-ol"></i> ${episodes} حلقة</span>
+                </div>
+                <button class="btn btn-secondary" type="button" onclick="openHistory('${last.id}')"><i class="fa-solid fa-arrow-up-right-from-square"></i> فتح الخطة</button>
+            `;
+        }
         function addToHistory(entry) {
             const items = loadHistory();
             items.unshift(entry);
@@ -1069,6 +1553,8 @@
             const items = loadHistory();
             const q = (document.getElementById('historySearch')?.value||'').trim();
             const filtered = q ? items.filter(it => (it.subject||'').includes(q) || (it.level||'').includes(q) || (it.difficulty||'').includes(q)) : items;
+            updateUsageStats(items);
+            updateRecentPlanPreview(items);
             if (!filtered.length) {
                 historyList.innerHTML = '<div class=\"tag\">لا توجد عناصر بعد</div>';
                 return;
@@ -1099,9 +1585,11 @@
                 renderPlan(item.plan);
                 renderEpisodes(item.plan.episodes || []);
                 renderQuizzes(item.quizzes || []);
+                updateResultSummary(item);
             } else if (item.html) {
                 document.getElementById('planContent').innerHTML = item.html;
                 switchTab('plan');
+                updateResultSummary(item);
             }
             switchView('results');
             window.scrollTo({ top: resultSection.offsetTop - 20, behavior: 'smooth' });
@@ -1109,11 +1597,13 @@
 
         // Episodes control
         episodesRange.addEventListener('input', () => {
-            episodesValue.textContent = episodesRange.value;
+            syncEpisodesUI();
+            updateFormProgress();
         });
         autoMode.addEventListener('change', () => {
-            episodesRange.disabled = autoMode.checked;
-            episodesValue.textContent = autoMode.checked ? 'تلقائي' : episodesRange.value;
+            syncEpisodesUI();
+            updateFormProgress();
+            saveForm();
         });
         // helper button for tips
         function openTips(){
@@ -1122,10 +1612,14 @@
 
         // Example filler
         function fillExample() {
-            document.getElementById('subject').value = 'تعلم البرمجة من الصفر حتى بناء أول مشروع ويب';
-            document.getElementById('difficulty').value = 'مبتدئ';
-            document.getElementById('level').value = 'ثانوي';
-            autoMode.checked = true; episodesRange.disabled = true; episodesValue.textContent = 'تلقائي';
+            if (subjectInput) subjectInput.value = 'تعلم البرمجة من الصفر حتى بناء أول مشروع ويب تفاعلي';
+            if (difficultySelect) difficultySelect.value = 'مبتدئ';
+            if (levelSelect) levelSelect.value = 'ثانوي';
+            autoMode.checked = true;
+            syncEpisodesUI();
+            updateFormProgress();
+            saveForm();
+            setTimeout(() => subjectInput?.focus(), 80);
         }
 
         // Form Submission
@@ -1143,6 +1637,7 @@
             // Show overlay
             overlay.style.display = 'flex';
             resultSection.style.display = 'none';
+            updateResultSummary(null);
 
             const startTime = Date.now();
             const estimatedTime = Math.random() * 240000 + 60000; // 1-5 minutes
@@ -1209,6 +1704,7 @@
                     renderPlan(plan);
                     renderEpisodes(plan.episodes || []);
                     renderQuizzes();
+                    updateResultSummary(currentItem);
                     document.getElementById('noResultsCard').style.display = 'none';
                     resultSection.style.display = 'block';
                     // Save
@@ -1665,11 +2161,16 @@
         }
 
         function resetForm() {
-            document.getElementById('subject').value = '';
-            document.getElementById('difficulty').value = '';
-            document.getElementById('level').value = '';
-            autoMode.checked = true; episodesRange.disabled = true; episodesValue.textContent = 'تلقائي';
+            if (subjectInput) subjectInput.value = '';
+            if (difficultySelect) difficultySelect.value = '';
+            if (levelSelect) levelSelect.value = '';
+            autoMode.checked = true;
+            episodesRange.value = '6';
+            syncEpisodesUI();
+            updateFormProgress();
+            saveForm();
             resultSection.style.display = 'none';
+            updateResultSummary(null);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1800,7 +2301,10 @@
                     currentItem = currentItem || { id: crypto.randomUUID(), subject: plan.title||'مستورد', level:'', difficulty:'', episodes:'تلقائي', createdAt: Date.now(), quizzes: [] };
                     currentItem.plan = plan;
                     addToHistory(currentItem);
-                    renderPlan(plan); renderEpisodes(plan.episodes||[]); renderQuizzes();
+                    renderPlan(plan);
+                    renderEpisodes(plan.episodes||[]);
+                    renderQuizzes();
+                    updateResultSummary(currentItem);
                     document.getElementById('noResultsCard').style.display = 'none';
                     resultSection.style.display = 'block';
                     switchView('results');
@@ -1871,9 +2375,9 @@
         const FORM_KEY = 'aiLearnForm';
         function saveForm() {
             const data = {
-                subject: document.getElementById('subject').value,
-                difficulty: document.getElementById('difficulty').value,
-                level: document.getElementById('level').value,
+                subject: subjectInput?.value || '',
+                difficulty: difficultySelect?.value || '',
+                level: levelSelect?.value || '',
                 auto: autoMode.checked,
                 episodes: episodesRange.value
             };
@@ -1882,16 +2386,17 @@
         function loadForm() {
             try {
                 const d = JSON.parse(localStorage.getItem(FORM_KEY) || '{}');
-                if (d.subject) document.getElementById('subject').value = d.subject;
-                if (d.difficulty) document.getElementById('difficulty').value = d.difficulty;
-                if (d.level) document.getElementById('level').value = d.level;
-                if (typeof d.auto === 'boolean') { autoMode.checked = d.auto; episodesRange.disabled = d.auto; }
-                if (d.episodes) { episodesRange.value = d.episodes; if (!autoMode.checked) episodesValue.textContent = d.episodes; }
+                if (subjectInput && d.subject) subjectInput.value = d.subject;
+                if (difficultySelect && d.difficulty) difficultySelect.value = d.difficulty;
+                if (levelSelect && d.level) levelSelect.value = d.level;
+                if (typeof d.auto === 'boolean') { autoMode.checked = d.auto; }
+                if (d.episodes) { episodesRange.value = d.episodes; }
             } catch {}
         }
-        ['subject','difficulty','level'].forEach(id => document.getElementById(id).addEventListener('change', saveForm));
-        episodesRange.addEventListener('change', saveForm);
-        autoMode.addEventListener('change', saveForm);
+        subjectInput?.addEventListener('input', () => { saveForm(); updateFormProgress(); });
+        difficultySelect?.addEventListener('change', () => { saveForm(); updateFormProgress(); });
+        levelSelect?.addEventListener('change', () => { saveForm(); updateFormProgress(); });
+        episodesRange.addEventListener('change', () => { saveForm(); });
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -2147,6 +2652,11 @@
         // Init
         renderHistory();
         loadForm();
+        renderTemplates();
+        updateUsageStats();
+        updateRecentPlanPreview();
+        syncEpisodesUI();
+        updateFormProgress();
         // Drawer wiring
         document.getElementById('openDrawer')?.addEventListener('click', ()=>{ const d = document.getElementById('advDrawer'); d.style.display='block'; requestAnimationFrame(()=> d.classList.add('drawer-show')); });
         document.getElementById('closeDrawer')?.addEventListener('click', ()=>{ const d = document.getElementById('advDrawer'); d.classList.remove('drawer-show'); setTimeout(()=> d.style.display='none', 180); });
