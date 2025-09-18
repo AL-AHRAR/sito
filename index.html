@@ -820,11 +820,11 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>منفذ API</label>
-                        <input id="settingsApiBase" class="input" placeholder="https://your-domain/api" />
+                        <input id="settingsApiBase" class="input" placeholder="https://text.pollinations.ai" />
                     </div>
                     <div class="form-group">
                         <label>الموديل</label>
-                        <input id="settingsModel" class="input" placeholder="gpt-like" />
+                        <input id="settingsModel" class="input" placeholder="openai-large" />
                     </div>
                     <div class="form-group" style="grid-column: 1 / -1;">
                         <label>مفتاح API (محفوظ محلياً)</label>
@@ -885,10 +885,15 @@
 
     <script>
         // API Configuration
-        let API_BASE = localStorage.getItem('aiApiBase') || window.location.origin; // default to same origin to avoid showing other brands
-        let CHAT_URL = `${API_BASE}/api/chat`;
-        let API_KEY = localStorage.getItem('aiApiKey') || '';
-        let MODEL = localStorage.getItem('aiModel') || 'gpt-like';
+        const DEFAULT_API_BASE = 'https://text.pollinations.ai';
+        const DEFAULT_CHAT_URL = `${DEFAULT_API_BASE}/openai/v1/chat/completions`;
+        const DEFAULT_API_KEY = 'HW125Pa6ELCq0M92';
+        const DEFAULT_MODEL = 'openai-large';
+
+        let API_BASE = localStorage.getItem('aiApiBase') || DEFAULT_API_BASE;
+        let CHAT_URL = `${API_BASE}/openai/v1/chat/completions`;
+        let API_KEY = localStorage.getItem('aiApiKey') || DEFAULT_API_KEY;
+        let MODEL = localStorage.getItem('aiModel') || DEFAULT_MODEL;
         let CHAT_MSG_LIMIT = parseInt(localStorage.getItem('aiChatMsgLimit')||'12', 10);
         let THEME_AUTO = localStorage.getItem('aiThemeAuto') === '1';
 
@@ -2109,16 +2114,21 @@
         }
         function closeSettings(){ const m = document.getElementById('settingsModal'); m.classList.remove('modal-show'); m.classList.add('modal-hide'); setTimeout(()=>{ m.style.display='none'; m.classList.remove('modal-hide'); },180); }
         function applySettings(){
-            API_BASE = (document.getElementById('settingsApiBase').value||'').trim() || API_BASE;
-            MODEL = (document.getElementById('settingsModel').value||'').trim() || MODEL;
+            const baseField = (document.getElementById('settingsApiBase').value||'').trim();
+            API_BASE = baseField || DEFAULT_API_BASE;
+            MODEL = (document.getElementById('settingsModel').value||'').trim() || DEFAULT_MODEL;
             const keyField = document.getElementById('settingsApiKey').value.trim();
-            if (keyField && keyField !== '********') API_KEY = keyField;
+            if (keyField && keyField !== '********') {
+                API_KEY = keyField;
+                localStorage.setItem('aiApiKey', API_KEY);
+            } else if (!API_KEY) {
+                API_KEY = DEFAULT_API_KEY;
+            }
             CHAT_MSG_LIMIT = parseInt(document.getElementById('settingsMsgLimit').value||'12',10);
             THEME_AUTO = document.getElementById('settingsThemeAuto').checked;
-            CHAT_URL = `${API_BASE}/api/chat`;
+            CHAT_URL = `${API_BASE}/openai/v1/chat/completions`;
             localStorage.setItem('aiApiBase', API_BASE);
             localStorage.setItem('aiModel', MODEL);
-            if (keyField && keyField !== '********') localStorage.setItem('aiApiKey', API_KEY);
             localStorage.setItem('aiChatMsgLimit', String(CHAT_MSG_LIMIT));
             localStorage.setItem('aiThemeAuto', THEME_AUTO ? '1' : '0');
             closeSettings();
@@ -2126,7 +2136,7 @@
         }
         function resetSettings(){
             localStorage.removeItem('aiApiBase'); localStorage.removeItem('aiModel'); localStorage.removeItem('aiApiKey'); localStorage.removeItem('aiChatMsgLimit'); localStorage.removeItem('aiThemeAuto');
-            API_BASE = window.location.origin; CHAT_URL = `${API_BASE}/api/chat`; MODEL = 'gpt-like'; API_KEY = ''; CHAT_MSG_LIMIT = 12; THEME_AUTO = false;
+            API_BASE = DEFAULT_API_BASE; CHAT_URL = DEFAULT_CHAT_URL; MODEL = DEFAULT_MODEL; API_KEY = DEFAULT_API_KEY; CHAT_MSG_LIMIT = 12; THEME_AUTO = false;
             openSettings();
         }
         document.getElementById('settingsMsgLimit')?.addEventListener('input', (e)=>{ document.getElementById('settingsMsgLimitValue').textContent = e.target.value; });
