@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التعلم الذكي - AI Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --ios-blue: #007AFF;
+            --ios-green: #34C759;
+            --ios-orange: #FF9500;
+            --ios-red: #FF3B30;
+            --ios-purple: #5856D6;
+            --text-primary: #0B0B0F;
+            --text-secondary: #6B7280;
+            --glass-bg: rgba(255, 255, 255, 0.18);
+            --glass-border: rgba(255, 255, 255, 0.28);
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --shadow-color: rgba(0, 0, 0, 0.18);
+        }
+        /* Dark theme */
+        body.theme-dark {
+            --text-primary: #E5E7EB;
+            --text-secondary: #9CA3AF;
+            --glass-bg: rgba(17, 24, 39, 0.42);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --card-bg: rgba(31, 41, 55, 0.7);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            color-scheme: dark;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        /* Smooth theme transitions */
+        html, body, .card, .nav, .result-content, .history-card, .quiz-card, .menu-list, .action-list, .chat-messages, .chat-input-bar, .generator-editor, .overlay {
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease;
+        }
+
+        /* Better focus indication */
+        :focus-visible { outline: 2px solid rgba(10,132,255,0.6); outline-offset: 2px; border-radius: 8px; }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        body {
+            font-family: "Tajawal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text-primary);
+            background: radial-gradient(1200px 800px at 15% 10%, rgba(0,122,255,0.10), transparent 60%),
+                        radial-gradient(1000px 700px at 85% 20%, rgba(88,86,214,0.12), transparent 60%),
+                        radial-gradient(900px 700px at 50% 90%, rgba(52,199,89,0.10), transparent 60%),
+                        linear-gradient(180deg, #F6F7FB 0%, #EDEFF6 100%);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.theme-dark {
+            background: radial-gradient(1200px 800px at 15% 10%, rgba(0,122,255,0.08), transparent 60%),
+                        radial-gradient(1000px 700px at 85% 20%, rgba(88,86,214,0.10), transparent 60%),
+                        radial-gradient(900px 700px at 50% 90%, rgba(52,199,89,0.08), transparent 60%),
+                        linear-gradient(180deg, #0B1220 0%, #0F172A 100%);
+        }
+
+        /* Dark theme overrides */
+        body.theme-dark .nav { background: linear-gradient(180deg, rgba(17,24,39,0.65) 0%, rgba(17,24,39,0.4) 100%); border-bottom-color: var(--glass-border); }
+        body.theme-dark .menu-btn { background: rgba(17,24,39,0.6); border: 1px solid var(--glass-border); color: var(--text-primary); }
+        body.theme-dark .menu-list button:hover { background: rgba(255,255,255,0.06); }
+        body.theme-dark .card-header { border-bottom: 1px solid rgba(255,255,255,0.08); }
+        body.theme-dark .input, body.theme-dark select, body.theme-dark textarea { background: rgba(17,24,39,0.6); border-color: var(--glass-border); color: var(--text-primary); }
+        body.theme-dark .input::placeholder, body.theme-dark textarea::placeholder { color: #9CA3AF; }
+        body.theme-dark .btn-secondary, body.theme-dark .icon-btn { background: rgba(17,24,39,0.6); border-color: var(--glass-border); color: var(--text-primary); }
+        body.theme-dark .action-list { background: var(--card-bg); border-color: var(--glass-border); }
+        body.theme-dark .action-list button:hover { background: rgba(255,255,255,0.06); }
+        body.theme-dark .generator-editor { background: linear-gradient(180deg, rgba(17,24,39,0.65), rgba(17,24,39,0.5)); }
+        body.theme-dark .quiz-options label { background: rgba(17,24,39,0.6); border-color: var(--glass-border); }
+        body.theme-dark .section-block { background: rgba(255,255,255,0.05); border-color: var(--glass-border); }
+        body.theme-dark .tabs { border-bottom-color: var(--glass-border); }
+        body.theme-dark .tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+        body.theme-dark .overlay { background: linear-gradient(180deg, rgba(11,18,32,0.85) 0%, rgba(15,23,42,0.85) 100%); }
+        body.theme-dark * { scrollbar-color: rgba(10,132,255,0.6) rgba(17,24,39,0.6); }
+        body.theme-dark ::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); }
+        body.theme-dark ::-webkit-scrollbar-thumb { border: 2px solid rgba(17,24,39,0.6); }
+
+        /* Top navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            width: 100%;
+            backdrop-filter: saturate(180%) blur(18px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 100%);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem;
+        }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ios-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
+        .brand span { letter-spacing: .3px; }
+        .nav-actions { display: flex; gap: 10px; position: relative; }
+        /* Dropdown menu */
+        .menu { position: relative; }
+        .menu-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); background: rgba(255,255,255,0.7); font-weight: 800; cursor: pointer; }
+        .menu-btn .caret { transition: transform .2s; }
+        .menu-open .menu-btn .caret { transform: rotate(180deg); }
+        .menu-list { position: absolute; top: calc(100% + 8px); right: 0; min-width: 220px; max-width: 95vw; background: var(--card-bg); backdrop-filter: blur(18px); border: 1px solid var(--glass-border); border-radius: 14px; box-shadow: 0 10px 30px var(--shadow-color); padding: 6px; display: none; z-index: 60; }
+        .menu-open .menu-list { display: block; animation: pop .18s ease both; }
+        .menu-list button { width: 100%; background: transparent; border: 0; text-align: right; padding: 10px 12px; border-radius: 10px; font-weight: 700; color: var(--text-primary); cursor: pointer; }
+        .menu-list button:hover { background: rgba(0,0,0,0.05); }
+        @media (max-width: 640px) {
+            .menu-list { position: fixed; left: 50%; right: auto; bottom: 16px; top: auto; transform: translateX(-50%); width: min(92vw, 420px); border-radius: 16px; }
+        }
+
+        /* Full-page layout */
+        .page {
+            min-height: calc(100vh - 60px);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 28px 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .views { position: relative; min-height: 60vh; height: auto; transition: height .35s ease; }
+        /* Ensure only the active view can receive pointer events and sits on top */
+        .view { position: absolute; inset: 0; opacity: 0; transform: translateY(20px); transition: opacity .35s ease, transform .35s ease; pointer-events: none; visibility: hidden; z-index: 0; }
+        .view-active { opacity: 1; transform: translateY(0); pointer-events: auto; visibility: visible; z-index: 2; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pop { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
+        .animate-in { animation: fadeInUp .45s ease both; }
+        .stagger > * { opacity: 0; transform: translateY(8px); animation: fadeInUp .45s ease both; }
+        .stagger > *:nth-child(1){ animation-delay:.02s }
+        .stagger > *:nth-child(2){ animation-delay:.05s }
+        .stagger > *:nth-child(3){ animation-delay:.08s }
+        .stagger > *:nth-child(4){ animation-delay:.11s }
+        .stagger > *:nth-child(5){ animation-delay:.14s }
+        .stagger > *:nth-child(6){ animation-delay:.17s }
+        .stagger > *:nth-child(7){ animation-delay:.20s }
+
+        /* Hero/Form card */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+        }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: saturate(160%) blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .card-header { padding: 20px 22px; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; gap: 10px; }
+        .card-header h2 { font-size: 1.1rem; }
+        .card-body { padding: 22px; }
+
+        /* Inputs */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-weight: 600; font-size: .95rem; }
+        .input, select, textarea {
+            width: 100%; padding: 14px 14px; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; font-size: 15px;
+            background: rgba(255,255,255,0.75);
+            transition: all .2s ease;
+        }
+        /* Code & inline code styling */
+        .result-content pre { background: transparent; padding: 0; border-radius: 0; overflow: visible; position: static; }
+        .result-content code { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 6px; direction: ltr; border: 1px solid rgba(0,0,0,0.08); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        body.theme-dark .result-content code { background: rgba(255,255,255,0.08); border-color: var(--glass-border); }
+        .result-content pre code { background: transparent; padding: 0; }
+        .code-block { border: 1px solid rgba(0,0,0,0.08); background: #F8FAFC; border-radius: 14px; overflow: hidden; margin: 10px 0; }
+        .code-head { display:flex; align-items:center; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.04); border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .code-lang { font-weight: 800; color: var(--ios-blue); font-size: .9rem; }
+        .code-copy { display:inline-flex; align-items:center; gap:6px; background: linear-gradient(180deg, #0A84FF 0%, #007AFF 100%); color: #fff; border:0; border-radius: 10px; padding: 6px 10px; font-weight:800; cursor:pointer; box-shadow: 0 4px 12px rgba(0,122,255,0.25); }
+        .code-copy.copied { background: linear-gradient(180deg, #34C759 0%, #28A745 100%); box-shadow: 0 4px 12px rgba(52,199,89,0.25); }
+        .code-content { padding: 12px; direction: ltr; text-align: left; overflow: auto; }
+        .code-content pre { margin: 0; }
+        .hljs { background: transparent !important; }
+        .result-content h1, .result-content h2, .result-content h3, .result-content h4 { margin-top: 14px; }
+        .result-content kbd { background: #111827; color: #fff; border-radius: 6px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.2); }
+        body.theme-dark .code-block { border-color: var(--glass-border); background: rgba(17,24,39,0.8); }
+        body.theme-dark .code-head { background: rgba(255,255,255,0.05); border-bottom-color: var(--glass-border); }
+        body.theme-dark .code-content { color: #E5E7EB; }
+        /* Improve hljs contrast in dark theme */
+        body.theme-dark .hljs, body.theme-dark .hljs-subst { color: #E5E7EB; }
+        body.theme-dark .hljs-keyword, body.theme-dark .hljs-selector-tag, body.theme-dark .hljs-title { color: #93C5FD; }
+        body.theme-dark .hljs-string, body.theme-dark .hljs-meta .hljs-string { color: #86EFAC; }
+        body.theme-dark .hljs-number, body.theme-dark .hljs-literal { color: #FCA5A5; }
+        body.theme-dark .hljs-attr, body.theme-dark .hljs-attribute { color: #FDE68A; }
+        body.theme-dark .hljs-comment { color: #9CA3AF; }
+
+        /* iOS Switch (unified) */
+        .ios-switch { display:inline-flex; align-items:center; gap:8px; }
+        .ios-switch input { appearance: none; width: 48px; height: 28px; background: #D1D5DB; border-radius: 999px; position: relative; outline: none; cursor: pointer; transition: background .2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+        .ios-switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform .2s; }
+        .ios-switch input:checked { background: var(--ios-blue); }
+        .ios-switch input:checked::after { transform: translateX(18px); }
+        .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+        /* Thinking animation */
+        .thinking { display: none; align-items: center; gap: 8px; color: var(--text-secondary); font-weight: 700; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ios-blue); opacity: .6; animation: blink 1.4s infinite ease-in-out both; }
+        .dot:nth-child(2) { animation-delay: .2s }
+        .dot:nth-child(3) { animation-delay: .4s }
+        @keyframes blink { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Refs chips */
+        .chips { display:flex; gap:6px; flex-wrap:nowrap; overflow:auto; max-width: 60%; }
+        .chip { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; background: rgba(10,132,255,0.12); color: var(--ios-blue); border:1px solid rgba(10,132,255,0.25); border-radius:999px; font-size:.85rem; }
+        .chip button { background:transparent; border:0; color:inherit; cursor:pointer; }
+        .msg-title { font-weight: 800; color: var(--ios-blue); margin-bottom: 6px; font-size: 1.05rem; }
+        textarea { min-height: 120px; resize: vertical; }
+        .input:focus, select:focus, textarea:focus {
+            outline: none; border-color: rgba(0,122,255,0.45); background: rgba(255,255,255,0.95);
+            box-shadow: 0 0 0 4px rgba(0,122,255,0.12);
+        }
+
+        /* iOS switch */
+        .toggle {
+            display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; padding: 4px; border-radius: 10px;
+        }
+        .switch { position: relative; width: 52px; height: 30px; background: #D1D5DB; border-radius: 999px; transition: background .25s; }
+        .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform .25s; }
+        .toggle input { display: none; }
+        .toggle input:checked + .switch { background: var(--ios-blue); }
+        .toggle input:checked + .switch::after { transform: translateX(22px); }
+
+        /* Range + value */
+        .episodes-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+        .episodes-header { display:flex; align-items:center; justify-content: space-between; gap: 12px; }
+        .episodes-toggle { display:flex; align-items:center; gap: 10px; align-self: flex-start; }
+        input[type=range] { accent-color: var(--ios-blue); }
+        .pill {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(0,122,255,0.12); color: var(--ios-blue); font-weight: 700;
+        }
+
+        /* Buttons */
+        .btn {
+            appearance: none; border: 0; border-radius: 999px; padding: 14px 22px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s;
+        }
+        /* Ensure unified modern font for all controls */
+        button, .btn, input, select, textarea { font-family: inherit; }
+        .btn-primary { background: linear-gradient(180deg, #0A84FF 0%, #007AFF 100%); color: white; box-shadow: 0 8px 20px rgba(0,122,255,0.28); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(0,122,255,0.35); }
+        .btn-secondary { background: rgba(255,255,255,0.7); color: var(--text-primary); border: 1px solid rgba(0,0,0,0.06); }
+        .btn-danger { background: linear-gradient(180deg, #FF5E57 0%, #FF3B30 100%); color: white; }
+
+        /* Loading overlay */
+        .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50;
+            background: linear-gradient(180deg, rgba(246,247,251,0.8) 0%, rgba(237,239,246,0.8) 100%); backdrop-filter: blur(16px);
+        }
+        .loader { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .spinner { width: 72px; height: 72px; border-radius: 999px; border: 4px solid rgba(0,122,255,0.15); border-top-color: var(--ios-blue); animation: spin 1s linear infinite; }
+        .loading-title { font-weight: 800; color: var(--ios-blue); font-size: 1.2rem; animation: pulse 2s ease-in-out infinite; }
+        .progress { width: min(560px, 90vw); height: 10px; background: rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
+        .progress > div { height: 100%; width: 0%; background: linear-gradient(90deg, #0A84FF, #34C759); transition: width .35s cubic-bezier(.2,.8,.2,1); }
+        .eta { color: var(--text-secondary); font-weight: 600; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 50% { opacity: .7; } }
+
+        /* Result */
+        .result-actions { display: flex; gap: 10px; justify-content: flex-end; padding: 0 22px 16px; }
+        .result-content { background: rgba(255,255,255,0.9); border-radius: 18px; padding: 22px; border: 1px solid rgba(0,0,0,0.06); }
+        /* Link styling */
+        a { color: var(--ios-blue); text-decoration: none; font-weight: 800; }
+        a:hover { text-decoration: underline; }
+        body.theme-dark a { color: #60A5FA; }
+        body.theme-dark .result-content { background: rgba(17,24,39,0.85); border-color: rgba(255,255,255,0.08); }
+        .result-content h3 { color: var(--ios-blue); margin: 16px 0 8px; }
+
+        /* History section */
+        .section-title { display: flex; align-items: center; justify-content: space-between; padding: 6px 2px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .history-card { background: var(--card-bg); backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+        .ep-badge { position: absolute; top: 12px; left: 12px; background: linear-gradient(180deg, #0A84FF, #34C759); color: #fff; border-radius: 999px; padding: 4px 8px; font-weight: 800; font-size: .8rem; }
+        .history-title { font-weight: 800; letter-spacing: .3px; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { background: rgba(0,0,0,0.06); padding: 4px 10px; border-radius: 999px; font-size: .85rem; color: var(--text-secondary); }
+        .history-actions { display: flex; gap: 8px; margin-top: 6px; }
+
+        /* Quiz cards */
+        .quiz-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .quiz-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 14px; backdrop-filter: blur(14px); position: relative; }
+        .quiz-card h4 { margin-bottom: 8px; color: var(--ios-purple); }
+        .quiz-meta { display:flex; gap:8px; color: var(--text-secondary); font-size:.9rem; margin-bottom: 6px; }
+        @media (min-width: 900px) { .quiz-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* Quiz fullscreen */
+        .quiz-full { position: fixed; inset: 0; display: none; z-index: 85; background: linear-gradient(180deg, rgba(246,247,251,0.9) 0%, rgba(237,239,246,0.9) 100%); backdrop-filter: blur(12px); opacity: 0; transform: translateY(10px) scale(0.98); transition: opacity .2s ease, transform .2s ease; }
+        .quiz-full.show { opacity: 1; transform: none; }
+        body.theme-dark .quiz-full { background: linear-gradient(180deg, rgba(11,18,32,0.9) 0%, rgba(15,23,42,0.9) 100%); }
+        .quiz-full .panel { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .quiz-full-header { position: sticky; top: 0; display:flex; align-items:center; justify-content: space-between; gap: 10px; padding: 10px 0 14px; background: transparent; }
+        .quiz-full-title { font-weight: 800; font-size: 1.2rem; }
+        .quiz-back-btn { background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 8px 12px; font-weight: 800; cursor:pointer; }
+        body.theme-dark .quiz-back-btn { background: rgba(17,24,39,0.6); border-color: var(--glass-border); color: var(--text-primary); }
+        .quiz-full-body { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px; box-shadow: 0 10px 30px var(--shadow-color); }
+
+        /* Chat send/stop buttons */
+        .send-btn { background: linear-gradient(180deg, #0A84FF 0%, #007AFF 100%); color:#fff; border:0; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:14px; box-shadow: 0 6px 16px rgba(0,122,255,0.25); }
+        .send-btn:hover { transform: translateY(-1px); }
+        .stop-btn { background: linear-gradient(180deg, #FF5E57 0%, #FF3B30 100%); color:#fff; box-shadow: 0 6px 16px rgba(255,59,48,0.25); }
+        .icon-btn { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:12px; background: rgba(255,255,255,0.7); border:1px solid rgba(0,0,0,0.06); }
+
+        /* Chat layout */
+        .chat-card .card-body { display: flex; flex-direction: column; gap: 12px; }
+        .chat-messages { flex: 1 1 auto; height: 60vh; min-height: 240px; overflow:auto; padding: 10px; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; background: rgba(255,255,255,0.65); backdrop-filter: blur(10px); }
+        .chat-empty { display:flex; align-items:center; justify-content:center; text-align:center; color: var(--text-secondary); font-weight: 800; font-size: 1.1rem; height: 100%; }
+        .chat-input-bar { position: sticky; bottom: 0; display:flex; gap:8px; align-items:center; background: rgba(255,255,255,0.7); border:1px solid rgba(0,0,0,0.06); border-radius: 16px; padding: 8px 10px; flex-wrap: wrap; z-index: 5; box-shadow: 0 10px 30px var(--shadow-color); }
+        .chat-input-bar, .chat-input-bar * { pointer-events: auto; }
+        #chatInput { flex: 1 1 220px; resize: none; min-height: 48px; max-height: 160px; border: 0; background: transparent; outline: none; font-family: inherit; }
+        .suggestions { display:flex; gap:6px; flex-wrap: wrap; }
+        .suggestions .chip { cursor: pointer; user-select: none; }
+        .attachments { display:flex; gap:6px; flex-wrap: wrap; }
+        .attachments .chip { background: rgba(0,0,0,0.05); border:1px solid rgba(0,0,0,0.08); }
+        .chat-toolbar { display:flex; align-items:center; gap:6px; margin-inline-start: auto; }
+        .chat-actions { position: relative; display: inline-flex; }
+        .chat-actions .action-list { position:absolute; bottom: calc(100% + 8px); left: 0; right: auto; background: #ffffff; border:1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 6px; box-shadow: 0 14px 30px rgba(0,0,0,0.18); display:none; z-index: 90; min-width: 220px; }
+        .chat-actions.actions-open .action-list { display:block; animation: pop .18s ease both; }
+        body.theme-dark .chat-messages { background: rgba(17,24,39,0.55); border-color: var(--glass-border); }
+        body.theme-dark .chat-input-bar { background: rgba(17,24,39,0.6); border-color: var(--glass-border); }
+        body.theme-dark .attachments .chip { background: rgba(255,255,255,0.06); border-color: var(--glass-border); }
+
+        /* Actions dropdown */
+        .actions { position: relative; display:flex; justify-content:flex-start; }
+        .action-btn { background: linear-gradient(180deg, #0A84FF 0%, #007AFF 100%); color:#fff; border:0; padding: 10px 14px; border-radius: 12px; font-weight:800; display:inline-flex; align-items:center; gap:8px; box-shadow: 0 6px 16px rgba(0,122,255,0.25); }
+        .action-btn i { filter: drop-shadow(0 1px 0 rgba(0,0,0,0.1)); }
+        .action-list { position:absolute; bottom: calc(100% + 8px); left:0; right:auto; background: #ffffff; border:1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 6px; box-shadow: 0 14px 30px rgba(0,0,0,0.18); display:none; z-index: 90; min-width: 240px; }
+        .action-list button { width: 100%; background:transparent; border:0; padding:10px 12px; border-radius:10px; text-align:right; cursor:pointer; font-weight:700; }
+        .action-list button:hover { background: rgba(0,0,0,0.05); }
+        .actions-open .action-list { display:block; animation: pop .18s ease both; }
+
+        /* Full-screen generator */
+        .generator-card .card-body { padding: 0; }
+        .generator-editor { padding: 16px; display:grid; grid-template-columns: 1fr; gap: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6)); }
+        .big-input { min-height: 200px; font-size: 1.05rem; }
+        .big-input::placeholder { color: #9AA0A6; }
+        .quiz-question { margin: 10px 0; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.03); }
+        .quiz-options { display: grid; gap: 8px; margin-top: 8px; }
+        .quiz-options label { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+        .quiz-options input { accent-color: var(--ios-blue); }
+        .option-correct { border-color: rgba(52,199,89,0.6) !important; background: rgba(52,199,89,0.08) !important; }
+        .option-wrong { border-color: rgba(255,59,48,0.6) !important; background: rgba(255,59,48,0.08) !important; }
+
+        /* Episode content blocks */
+        .section-block { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.06); padding: 12px; border-radius: 12px; margin: 8px 0; }
+        .terms { display:flex; gap:6px; flex-wrap:wrap; }
+        .term { display:inline-flex; align-items:center; padding:2px 8px; background: rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.08); border-radius: 999px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:.85rem; }
+        body.theme-dark .term { background: rgba(255,255,255,0.06); border-color: var(--glass-border); color: var(--text-primary); }
+        .placeholder { color: var(--text-secondary); text-align: center; padding: 24px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 14px; }
+        .tab-btn { background: transparent; border: 0; padding: 10px 14px; border-radius: 12px 12px 0 0; font-weight: 800; color: var(--text-secondary); cursor: pointer; }
+        .tab-active { color: var(--ios-blue); background: rgba(10,132,255,0.10); }
+        .tab-content { padding-top: 8px; }
+
+        /* Modal */
+        .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 70; background: rgba(0,0,0,0.35); opacity: 0; transform: translateY(8px) scale(0.98); transition: opacity .18s ease, transform .18s ease; }
+        .modal-show { opacity: 1 !important; transform: none !important; }
+        .modal-hide { opacity: 0 !important; transform: translateY(8px) scale(0.98) !important; }
+        .modal-dialog { width: min(780px, 92vw); background: var(--card-bg); backdrop-filter: blur(18px); border: 1px solid var(--glass-border); border-radius: 18px; box-shadow: 0 10px 30px var(--shadow-color); overflow: hidden; }
+        body.theme-dark .modal { background: rgba(0,0,0,0.55); }
+        .modal-header { display:flex; align-items:center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .modal-body { padding: 16px; max-height: 70vh; overflow: auto; }
+
+        /* Loading percent */
+        .percent { font-weight: 800; color: var(--text-secondary); }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; left: 24px; background: rgba(0,0,0,0.8); color: #fff; padding: 10px 16px; border-radius: 12px; opacity: 0; transform: translateY(20px); transition: .3s; z-index: 80; pointer-events: none; }
+        .toast-show { opacity: 1; transform: translateY(0); }
+
+        /* Background enhancement */
+        body::before { content:""; position: fixed; inset:0; pointer-events:none; background:
+            radial-gradient(800px 600px at 10% 0%, rgba(0,122,255,0.10), transparent 60%),
+            radial-gradient(700px 600px at 90% 10%, rgba(88,86,214,0.10), transparent 60%),
+            radial-gradient(900px 700px at 50% 95%, rgba(52,199,89,0.08), transparent 60%),
+            linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.25) 100%),
+            linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(0deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: auto, auto, auto, auto, 40px 40px, 40px 40px;
+            mix-blend-mode: normal;
+        }
+        body.theme-dark::before { background:
+            radial-gradient(800px 600px at 10% 0%, rgba(0,122,255,0.10), transparent 60%),
+            radial-gradient(700px 600px at 90% 10%, rgba(88,86,214,0.12), transparent 60%),
+            radial-gradient(900px 700px at 50% 95%, rgba(52,199,89,0.10), transparent 60%),
+            linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.04) 100%),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(0deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+        }
+
+        /* Custom scrollbars */
+        html { scroll-behavior: smooth; }
+        * { scrollbar-width: thin; scrollbar-color: rgba(0,122,255,0.5) rgba(0,0,0,0.06); }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.06); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(10,132,255,0.85), rgba(52,199,89,0.85)); border-radius: 10px; border: 2px solid rgba(255,255,255,0.6); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(10,132,255,1), rgba(52,199,89,1)); }
+
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr;} }
+
+        /* Visual polish pack */
+        :root { --radius: 14px; }
+        .icon-btn, .btn { transition: transform .08s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease; }
+        .icon-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
+        .icon-btn:active { transform: translateY(0); }
+        .btn { min-height: 44px; display:inline-flex; align-items:center; gap:8px; letter-spacing:.2px; }
+        .btn-secondary:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .generator-actions { display:flex; justify-content: space-between; gap:10px; margin-top: 6px; flex-wrap: wrap; }
+        .generator-actions .left-actions, .generator-actions .right-actions { display:flex; gap:10px; align-items:center; }
+        .chat-bubble { border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+        .chat-bubble.user { background: rgba(10,132,255,0.08); border: 1px solid rgba(10,132,255,0.2); }
+        .chat-bubble.assistant { background: rgba(52,199,89,0.08); border: 1px solid rgba(52,199,89,0.2); }
+        .bubble-meta { font-size: .85rem; color: var(--text-secondary); margin-bottom: 6px; }
+        .menu-list { max-height: 60vh; overflow:auto; }
+        .tag { user-select: none; }
+        input::placeholder, textarea::placeholder { opacity: .85; }
+        /* Advanced drawer */
+        .drawer { position: fixed; inset:0; display:none; z-index:85; background: rgba(0,0,0,0.35); opacity:0; transition: opacity .18s ease; }
+        .drawer-show { opacity: 1; }
+        .drawer .drawer-panel { position: absolute; top:0; bottom:0; left:0; width: min(420px, 92vw); background: var(--card-bg); backdrop-filter: blur(18px); border-inline-end: 1px solid var(--glass-border); transform: translateX(-100%); transition: transform .22s ease; padding: 14px; box-shadow: 0 10px 30px var(--shadow-color); }
+        .drawer-show .drawer-panel { transform: translateX(0); }
+        .drawer-header { display:flex; align-items:center; justify-content: space-between; margin-bottom: 8px; }
+        .drawer-body { display:grid; gap: 10px; overflow:auto; height: calc(100% - 84px); }
+        .drawer-footer { display:flex; gap: 10px; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--glass-border); }
+        body.theme-dark .drawer { background: rgba(0,0,0,0.55); }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="nav-inner">
+            <div class="brand">
+                <div class="dot"></div>
+                <span>منصة التعلم الذكي</span>
+            </div>
+            <div class="nav-actions">
+                <span id="offlineBadge" class="tag" style="display:none; background: rgba(255,59,48,0.12); color:#B00020; border:1px solid rgba(255,59,48,0.25);">غير متصل</span>
+                <button id="shortcutsBtn" class="icon-btn" title="الاختصارات" aria-label="الاختصارات"><i class="fa-regular fa-keyboard"></i></button>
+                <button id="themeToggle" class="icon-btn" title="الوضع الداكن/الفاتح" aria-label="الوضع الداكن"><i class="fa-solid fa-moon"></i></button>
+                <button id="openSettingsIcon" class="icon-btn" title="الإعدادات" aria-label="الإعدادات"><i class="fa-solid fa-gear"></i></button>
+                <div class="menu" id="mainMenu">
+                    <button class="menu-btn" id="menuBtn">
+                        <i class="fa-solid fa-bars"></i>
+                        <span id="activeSectionLabel">المولد</span>
+                        <i class="fa-solid fa-chevron-down caret"></i>
+                    </button>
+                    <div class="menu-list" id="menuList" role="menu">
+                        <button role="menuitem" data-view="generator"><i class="fa-solid fa-wand-magic-sparkles"></i> المولد</button>
+                        <button role="menuitem" data-view="results"><i class="fa-solid fa-graduation-cap"></i> النتائج</button>
+                        <button role="menuitem" data-view="history"><i class="fa-solid fa-clock-rotate-left"></i> السجل</button>
+                        <button role="menuitem" data-view="chat"><i class="fa-solid fa-comments"></i> المحادثة</button>
+                        <button role="menuitem" data-action="open-settings"><i class="fa-solid fa-gear"></i> الإعدادات</button>
+                        <button role="menuitem" data-action="open-shortcuts"><i class="fa-regular fa-keyboard"></i> الاختصارات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="views">
+            <section id="view-generator" class="view view-active">
+                <!-- Full-screen generator editor -->
+                <section class="card generator-card animate-in">
+                    <div class="card-header">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--ios-blue);"></i>
+                        <h2>أنشئ خطتك التعليمية بسهولة</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="generator-actions">
+                            <div class="left-actions">
+                                <button type="button" class="btn btn-secondary" id="openDrawer"><i class="fa-solid fa-sliders"></i> إعدادات متقدمة</button>
+                            </div>
+                            <div class="right-actions">
+                                <button type="button" class="btn btn-secondary" onclick="fillExample()"><i class="fa-regular fa-lightbulb"></i> مثال سريع</button>
+                                <button type="submit" form="learningForm" class="btn btn-primary"><i class="fa-solid fa-magic"></i> ابدأ إنشاء الخطة</button>
+                            </div>
+                        </div>
+                        <form id="learningForm" class="generator-editor">
+                            <div class="form-group">
+                                <label for="subject">اكتب ما تريد تعلمه</label>
+                                <textarea id="subject" class="input big-input" placeholder="اكتب الهدف التعليمي والتفاصيل المهمة… مثال: تعلم تطوير واجهات ويب تفاعلية باستخدام React من الصفر حتى مشروع نهائي" required></textarea>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="difficulty">مستوى الصعوبة</label>
+                                    <select id="difficulty" class="input" required>
+                                        <option value="">اختر المستوى</option>
+                                        <option value="مبتدئ">مبتدئ</option>
+                                        <option value="متوسط">متوسط</option>
+                                        <option value="متقدم">متقدم</option>
+                                        <option value="خبير">خبير</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="level">المستوى التعليمي</label>
+                                    <select id="level" class="input" required>
+                                        <option value="">اختر المستوى</option>
+                                        <option value="ابتدائي">ابتدائي</option>
+                                        <option value="متوسط">متوسط</option>
+                                        <option value="ثانوي">ثانوي</option>
+                                        <option value="جامعي">جامعي</option>
+                                        <option value="دراسات عليا">دراسات عليا</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="episodes-header">
+                                    <label>عدد الحلقات التعليمية</label>
+                                    <div class="episodes-toggle">
+                                        <span>تلقائي</span>
+                                        <label class="ios-switch" aria-label="تحديد تلقائي لعدد الحلقات">
+                                            <input type="checkbox" id="autoMode" checked>
+                                            <span class="sr-only">تحديد تلقائي لعدد الحلقات</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="episodes-row" style="margin-top:8px;">
+                                    <input type="range" id="episodesRange" min="1" max="20" value="6" disabled>
+                                    <span class="pill" id="episodesValue">تلقائي</span>
+                                </div>
+                            </div>
+                            <div class="generator-actions">
+                                <div class="left-actions"></div>
+                                <div class="right-actions">
+                                    <button type="button" class="btn btn-secondary" onclick="fillExample()"><i class="fa-regular fa-lightbulb"></i> مثال سريع</button>
+                                    <button type="submit" class="btn btn-primary" id="startPlanBtn"><i class="fa-solid fa-magic"></i> ابدأ إنشاء الخطة</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Results Section moved to separate view -->
+            </section>
+            <section id="view-results" class="view">
+                <!-- Placeholder when no results -->
+                <section class="card animate-in" id="noResultsCard" style="display:block;">
+                    <div class="card-body placeholder">
+                        <div style="font-size:1.1rem; margin-bottom: 10px;">لا يوجد أي نتائج إلى حد الآن.</div>
+                        <div>قم بإنشاء خطة جديدة من قسم المولد، أو ادخل إلى مخرج سابق عبر السجل.</div>
+                        <div style="display:flex; gap:10px; justify-content:center; margin-top: 14px;">
+                            <button class="btn btn-primary" onclick="switchView('generator')"><i class="fa-solid fa-wand-magic-sparkles"></i> الانتقال إلى المولد</button>
+                            <button class="btn btn-secondary" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i> فتح السجل</button>
+                        </div>
+                    </div>
+                </section>
+                <!-- Results Section -->
+                <section class="card animate-in" id="resultSection" style="display:none;">
+                    <div class="card-header">
+                        <i class="fa-solid fa-graduation-cap" style="color: var(--ios-green);"></i>
+                        <h2>مخرجات التوليد</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="tabs">
+                            <button class="tab-btn tab-active" data-tab="plan"><i class="fa-solid fa-list"></i> الخطة</button>
+                            <button class="tab-btn" data-tab="episodes"><i class="fa-solid fa-clapperboard"></i> الحلقات</button>
+                            <button class="tab-btn" data-tab="quizzes"><i class="fa-solid fa-clipboard-check"></i> الاختبارات</button>
+                        </div>
+                        <div id="tab-plan" class="tab-content">
+                            <div class="result-content" id="planContent"></div>
+                        </div>
+                        <div id="tab-episodes" class="tab-content" style="display:none;">
+                            <div id="episodesList" class="grid stagger"></div>
+                        </div>
+                        <div id="tab-quizzes" class="tab-content" style="display:none;">
+                            <div style="display:flex; gap:10px; justify-content:flex-end; margin-bottom: 8px;">
+                                <button class="btn btn-primary" onclick="generateFinalExam()"><i class="fa-solid fa-pen-to-square"></i> إنشاء الاختبار النهائي</button>
+                            </div>
+                            <div id="quizzesContent" class="result-content"></div>
+                        </div>
+                    </div>
+                    <div class="actions" id="resultsActions">
+                        <button class="action-btn" id="resultsActionBtn" type="button"><i class="fa-solid fa-ellipsis"></i> إجراءات</button>
+                        <div class="action-list" id="resultsActionList">
+                            <button onclick="copyPlanMarkdown()"><i class="fa-solid fa-copy"></i> نسخ كمحتوى Markdown</button>
+                            <button onclick="downloadPlanMarkdown()"><i class="fa-solid fa-download"></i> تنزيل ملف Markdown</button>
+                            <button onclick="exportEpisodesPDF()"><i class="fa-solid fa-file-pdf"></i> تصدير الحلقات PDF</button>
+                            <button onclick="exportPlanJson()"><i class="fa-solid fa-file-code"></i> تصدير الخطة JSON</button>
+                            <button onclick="openPlanImport()"><i class="fa-solid fa-file-import"></i> استيراد خطة JSON</button>
+                            <button onclick="printPlan()"><i class="fa-solid fa-print"></i> طباعة</button>
+                            <button onclick="improvePlan()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحسين وضوح الخطة</button>
+                            <button onclick="createMicrolearning()"><i class="fa-solid fa-bolt"></i> جدولة Microlearning</button>
+                            <button onclick="resetForm()"><i class="fa-solid fa-arrow-rotate-left"></i> خطة جديدة</button>
+                        </div>
+                        <input id="planJsonFile" type="file" accept="application/json" style="display:none;" />
+                    </div>
+                </section>
+                <!-- Fullscreen Quiz Container -->
+                <div id="quizFull" class="quiz-full" aria-modal="true" role="dialog">
+                    <div class="panel">
+                        <div class="quiz-full-header">
+                    <button class="quiz-back-btn" type="button" onclick="closeQuizFull()"><i class="fa-solid fa-arrow-right"></i> العودة إلى الاختبارات</button>
+                            <div class="quiz-full-title" id="quizFullTitle"></div>
+                            <div style="width:140px;"></div>
+                        </div>
+                        <div class="quiz-full-body">
+                            <div id="quizFullContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-chat" class="view">
+                <section class="card animate-in chat-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-comments" style="color: var(--ios-blue);"></i>
+                        <h2>المحادثة الذكية حول خطتك</h2>
+                    </div>
+                    <div class="card-body" style="display:flex; flex-direction: column; gap: 12px;">
+                        <div id="chatMessages" class="chat-messages"></div>
+                        <div class="thinking" id="chatThinking"><span>جاري التفكير</span><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div id="chatSuggestions" class="suggestions"></div>
+                        <div class="chat-input-bar">
+                            <div class="chips" id="refChips"></div>
+                            <div id="attachmentChips" class="attachments"></div>
+                            <textarea id="chatInput" placeholder="اكتب سؤالك حول الدورة..." aria-label="نص الرسالة" autocomplete="off"></textarea>
+                            <div class="chat-toolbar">
+                        <button id="chatAttach" class="icon-btn" aria-label="إرفاق ملف" title="إرفاق ملف" type="button"><i class="fa-solid fa-paperclip"></i></button>
+                        <button id="chatRefs" class="icon-btn" aria-label="إعدادات المحادثة" title="إعدادات ومراجع" type="button"><i class="fa-solid fa-gear"></i></button>
+                                <div class="chat-actions" id="chatActions">
+                                    <button id="chatMore" class="icon-btn" aria-label="إجراءات المحادثة" title="إجراءات" type="button"><i class="fa-solid fa-ellipsis"></i></button>
+                                    <div class="action-list" id="chatActionList">
+                                        <button onclick="clearChat()"><i class="fa-regular fa-trash-can"></i> مسح المحادثة</button>
+                                        <button onclick="exportChatMarkdown()"><i class="fa-solid fa-file-export"></i> تصدير Markdown</button>
+                                        <button onclick="exportChatJson()"><i class="fa-solid fa-code"></i> تصدير JSON</button>
+                                    </div>
+                                </div>
+                        <button id="chatSend" class="send-btn" aria-label="إرسال" type="button"><i class="fa-solid fa-arrow-up"></i></button>
+                            </div>
+                            <input id="chatFile" type="file" accept=".txt,.md,.json,.csv,.log" style="display:none;" />
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section id="view-history" class="view">
+                <!-- History Section -->
+                <section class="card" id="historySection">
+                    <div class="card-header">
+                        <i class="fa-solid fa-clock-rotate-left" style="color: var(--ios-orange);"></i>
+                        <h2>سجل التوليدات الأخيرة</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="section-title">
+                            <span style="color: var(--text-secondary);">يمكنك عرض أي توليد سابق أو حذفه من السجل</span>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input id="historySearch" class="input" placeholder="بحث في السجل..." style="width:220px;" />
+                <button class="btn btn-secondary" type="button" onclick="clearHistory()"><i class="fa-solid fa-trash"></i> حذف السجل</button>
+                            </div>
+                        </div>
+                        <div class="grid" id="historyList"></div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+    <!-- Loading Overlay -->
+    <div class="overlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
+        <div class="loader">
+            <div class="spinner"></div>
+            <div class="loading-title">جاري التوليد...</div>
+            <div class="progress"><div id="progressFill"></div></div>
+            <div class="percent" id="percentText">0%</div>
+            <div class="eta" id="timeRemaining">الوقت المتبقي التقديري...</div>
+            <div class="eta" id="tipText">نصيحة: حدّد المستوى والصعوبة لتحسين النتيجة.</div>
+        </div>
+    </div>
+
+    <!-- Drawer: Advanced Generator Settings (optional) -->
+    <div class="drawer" id="advDrawer" aria-modal="true" role="dialog">
+        <div class="drawer-panel">
+            <div class="drawer-header">
+                <h3 style="margin:0; color: var(--ios-blue);"><i class="fa-solid fa-sliders"></i> إعدادات متقدمة (اختيارية)</h3>
+                <button class="btn btn-secondary" id="closeDrawer" type="button"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+            </div>
+            <div class="drawer-body">
+                <div class="form-group">
+                    <label>تضمين مشاريع صغيرة</label>
+                    <label class="ios-switch"><input type="checkbox" id="optMiniProjects"><span class="sr-only">تفعيل مشاريع صغيرة</span></label>
+                </div>
+                <div class="form-group">
+                    <label>تركيز على الجانب العملي</label>
+                    <label class="ios-switch"><input type="checkbox" id="optHandsOn" checked><span class="sr-only">تركيز عملي</span></label>
+                </div>
+                <div class="form-group">
+                    <label>نسبة الأكواد في الشرح</label>
+                    <div class="episodes-row">
+                        <input id="optCodeRatio" type="range" min="0" max="100" value="40" />
+                        <span class="pill" id="optCodeRatioVal">40%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>إطار زمني مقترح</label>
+                    <select id="optTimeframe" class="input">
+                        <option value="">غير محدد</option>
+                        <option value="سريع">سريع</option>
+                        <option value="متوازن">متوازن</option>
+                        <option value="متعمق">متعمق</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>مصادر مفضلة (اختياري)</label>
+                    <textarea id="optPreferredSources" class="input" placeholder="أدخل روابط أو أسماء مصادر..."></textarea>
+                </div>
+            </div>
+            <div class="drawer-footer">
+                <button class="btn btn-secondary" id="resetDrawer" type="button"><i class="fa-solid fa-rotate"></i> افتراضي</button>
+                <button class="btn btn-primary" id="applyDrawer" type="button"><i class="fa-solid fa-check"></i> حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Episode Modal -->
+
+    <!-- References Modal -->
+    <div class="modal" id="refsModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 style="margin:0; color: var(--ios-purple);"><i class="fa-solid fa-books"></i> المراجع والإعدادات</h3>
+                <button class="btn btn-secondary" onclick="closeRefs()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+            </div>
+            <div class="modal-body">
+                <h4>اختر المراجع (الكورسات)</h4>
+                <div id="refsList" class="grid" style="margin-bottom:12px;"></div>
+                <h4>إعدادات المحادثة</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>نمط الإجابة</label>
+                        <select id="chatStyle" class="input">
+                            <option value="concise">مختصرة وواضحة</option>
+                            <option value="detailed">مفصلة ومدعمة بالأمثلة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>لغة الإخراج</label>
+                        <select id="chatLang" class="input">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>أمثلة برمجية</label>
+                        <label class="ios-switch"><input type="checkbox" id="chatCode"><span class="sr-only">تفعيل أمثلة برمجية</span></label>
+                    </div>
+                    <div class="form-group">
+                        <label>اختبارات قصيرة عند الطلب</label>
+                        <label class="ios-switch"><input type="checkbox" id="chatQuizzes" checked><span class="sr-only">تفعيل الاختبارات</span></label>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px;">
+                <button class="btn btn-secondary" type="button" onclick="closeRefs()">إلغاء</button>
+                    <button class="btn btn-primary" type="button" onclick="applyRefs()"><i class="fa-solid fa-check"></i> حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="episodeModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="episodeModalTitle" style="margin:0; color: var(--ios-blue);"></h3>
+                <button class="btn btn-secondary" type="button" onclick="closeEpisodeModal()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+            </div>
+            <div class="modal-body">
+                <div id="episodeModalContent" class="result-content"></div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 12px;">
+                    <button class="btn btn-primary" id="episodeQuizBtn"><i class="fa-solid fa-question"></i> إنشاء اختبار الحلقة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link confirmation Modal -->
+    <div class="modal" id="linkConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 style="margin:0; color: var(--ios-orange);"><i class="fa-solid fa-link"></i> تأكيد فتح الرابط</h3>
+                <button class="btn btn-secondary" type="button" onclick="closeLinkConfirm()"><i class="fa-solid fa-xmark"></i> إلغاء</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 10px;">تنبيه: الروابط الخارجية هنا غير مضمونة التحليل وقد تحتوي على مخاطر أمنية أو فيروسات. تأكد من الثقة في المصدر قبل المتابعة.</p>
+                <div class="result-content" style="margin-bottom: 12px;">
+                    <div><strong>الرابط:</strong> <span id="linkConfirmUrl" style="word-break: break-all;"></span></div>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button class="btn btn-secondary" type="button" onclick="openLinkSame()"><i class="fa-solid fa-up-right-from-square"></i> فتح في نفس النافذة</button>
+                    <button class="btn btn-primary" type="button" onclick="openLinkNew()"><i class="fa-regular fa-window-restore"></i> فتح في نافذة جديدة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 style="margin:0; color: var(--ios-purple);"><i class="fa-solid fa-gear"></i> الإعدادات</h3>
+                <button class="btn btn-secondary" type="button" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>منفذ API</label>
+                        <input id="settingsApiBase" class="input" placeholder="https://your-domain/api" />
+                    </div>
+                    <div class="form-group">
+                        <label>الموديل</label>
+                        <input id="settingsModel" class="input" placeholder="gpt-like" />
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>مفتاح API (محفوظ محلياً)</label>
+                        <input id="settingsApiKey" type="password" class="input" placeholder="{{API_KEY}}" />
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>عدد رسائل السياق للمحادثة</label>
+                        <div class="episodes-row">
+                            <input id="settingsMsgLimit" type="range" min="4" max="20" value="12" />
+                            <span class="pill" id="settingsMsgLimitValue">12</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>السمة</label>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <label class="ios-switch"><input type="checkbox" id="settingsThemeAuto"><span class="sr-only">اتّباع النظام تلقائياً</span></label>
+                            <span style="color: var(--text-secondary);">اتّباع النظام تلقائياً</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 12px;">
+                    <button class="btn btn-secondary" type="button" onclick="resetSettings()"><i class="fa-solid fa-rotate"></i> افتراضي</button>
+                    <button class="btn btn-primary" type="button" onclick="applySettings()"><i class="fa-solid fa-check"></i> حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shortcuts Modal -->
+    <div class="modal" id="shortcutsModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 style="margin:0; color: var(--ios-blue);"><i class="fa-regular fa-keyboard"></i> الاختصارات</h3>
+                <button class="btn btn-secondary" type="button" onclick="closeShortcuts()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+            </div>
+            <div class="modal-body">
+                <div class="result-content">
+                    <ul>
+                        <li><kbd>Ctrl</kbd> + <kbd>Enter</kbd>: بدء إنشاء الخطة</li>
+                        <li><kbd>Enter</kbd>: إرسال رسالة المحادثة</li>
+                        <li><kbd>Shift</kbd> + <kbd>Enter</kbd>: سطر جديد في المحادثة</li>
+                        <li><kbd>Esc</kbd>: إغلاق النوافذ المنبثقة</li>
+                        <li><kbd>Alt</kbd> + <kbd>T</kbd>: تبديل الوضع الداكن/الفاتح</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="actionToast" class="toast" role="status" aria-live="polite" style="left:auto; right:24px;"></div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        // API Configuration
+        let API_BASE = localStorage.getItem('aiApiBase') || window.location.origin; // default to same origin to avoid showing other brands
+        let CHAT_URL = `${API_BASE}/api/chat`;
+        let API_KEY = localStorage.getItem('aiApiKey') || '';
+        let MODEL = localStorage.getItem('aiModel') || 'gpt-like';
+        let CHAT_MSG_LIMIT = parseInt(localStorage.getItem('aiChatMsgLimit')||'12', 10);
+        let THEME_AUTO = localStorage.getItem('aiThemeAuto') === '1';
+
+        // DOM Elements
+        const form = document.getElementById('learningForm');
+        const resultSection = document.getElementById('resultSection');
+        const overlay = document.getElementById('loadingOverlay');
+        const viewsContainer = document.querySelector('.views');
+        const menuBtn = document.getElementById('menuBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const menuList = document.getElementById('menuList');
+        const mainMenu = document.getElementById('mainMenu');
+        const activeSectionLabel = document.getElementById('activeSectionLabel');
+        const offlineBadge = document.getElementById('offlineBadge');
+        const shortcutsBtn = document.getElementById('shortcutsBtn');
+        const openSettingsIcon = document.getElementById('openSettingsIcon');
+        const planJsonFile = document.getElementById('planJsonFile');
+        const progressFill = document.getElementById('progressFill');
+        const timeRemaining = document.getElementById('timeRemaining');
+        const percentText = document.getElementById('percentText');
+        const tipText = document.getElementById('tipText');
+        const resultsActionBtn = document.getElementById('resultsActionBtn');
+        const resultsActionList = document.getElementById('resultsActionList');
+        const resultsActions = document.getElementById('resultsActions');
+        const episodesRange = document.getElementById('episodesRange');
+        const episodesValue = document.getElementById('episodesValue');
+        const autoMode = document.getElementById('autoMode');
+        const historyList = document.getElementById('historyList');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatRefsBtn = document.getElementById('chatRefs');
+        const chatThinking = document.getElementById('chatThinking');
+        const refsModal = document.getElementById('refsModal');
+        const refsList = document.getElementById('refsList');
+        const refChips = document.getElementById('refChips');
+
+        // Views
+        function switchView(name) {
+            const views = document.querySelectorAll('.view');
+            views.forEach(v => v.classList.remove('view-active'));
+            const el = document.getElementById(`view-${name}`);
+            if (el) {
+                el.classList.add('view-active');
+                localStorage.setItem('aiLearnView', name);
+                // Update dropdown label
+                const labelMap = { generator: 'المولد', results: 'النتائج', history: 'السجل', chat: 'المحادثة' };
+                if (activeSectionLabel) activeSectionLabel.textContent = labelMap[name] || 'القسم';
+                // Adjust container height and reset scroll
+                requestAnimationFrame(() => {
+                    if (viewsContainer) {
+                        viewsContainer.style.height = el.scrollHeight + 'px';
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                if (name === 'chat') { try { renderChat(); focusChatInput(); } catch {} }
+                // Close menu if open
+                mainMenu?.classList.remove('menu-open');
+            }
+        }
+
+        // Dropdown menu interactions
+        menuBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mainMenu?.classList.toggle('menu-open');
+        });
+        menuList?.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[role=\"menuitem\"]');
+            if (!btn) return;
+            const view = btn.getAttribute('data-view');
+            const action = btn.getAttribute('data-action');
+            if (view) switchView(view);
+            if (action === 'open-settings') openSettings();
+            if (action === 'open-shortcuts') openShortcuts();
+        });
+        document.addEventListener('click', (e) => {
+            if (!mainMenu?.contains(e.target)) mainMenu?.classList.remove('menu-open');
+            if (!resultsActions?.contains(e.target)) resultsActions?.classList.remove('actions-open');
+            const chatActions = document.getElementById('chatActions');
+            if (chatActions && !chatActions.contains(e.target)) chatActions.classList.remove('actions-open');
+        });
+        // Theme toggle
+        function applyTheme(theme){
+            document.body.classList.toggle('theme-dark', theme==='dark');
+            localStorage.setItem('aiTheme', theme);
+            if (themeToggle) {
+                themeToggle.innerHTML = theme==='dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+                themeToggle.title = theme==='dark' ? 'الوضع الفاتح' : 'الوضع الداكن';
+                themeToggle.setAttribute('aria-label', theme==='dark' ? 'الوضع الفاتح' : 'الوضع الداكن');
+            }
+        }
+        themeToggle?.addEventListener('click', ()=>{
+            const curr = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
+            applyTheme(curr==='dark' ? 'light' : 'dark');
+        });
+        (function(){
+            const saved = localStorage.getItem('aiTheme');
+            if (THEME_AUTO) {
+                if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
+            } else if (saved) applyTheme(saved); else if (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
+        })();
+        // Keep dropdown within viewport on open (desktop)
+        menuBtn?.addEventListener('click', () => {
+            if (!mainMenu?.classList.contains('menu-open')) return;
+            const rect = menuList?.getBoundingClientRect();
+            if (!rect) return;
+            if (rect.left < 8) { menuList.style.left = '8px'; menuList.style.right = 'auto'; }
+            if (rect.right > window.innerWidth - 8) { menuList.style.right = '8px'; menuList.style.left = 'auto'; }
+        });
+        // Results actions dropdown
+        resultsActionBtn?.addEventListener('click', (e) => { e.stopPropagation(); resultsActions?.classList.toggle('actions-open'); });
+        // Chat actions dropdown
+        document.getElementById('chatMore')?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); document.getElementById('chatActions')?.classList.toggle('actions-open'); });
+        document.getElementById('chatAttach')?.addEventListener('click', ()=> document.getElementById('chatFile')?.click());
+
+        // Tabs
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.tab-btn');
+            if (btn) {
+                switchTab(btn.dataset.tab);
+                return;
+            }
+            const quizBtn = e.target.closest('[data-open-quiz]');
+            if (quizBtn) {
+                const idx = parseInt(quizBtn.getAttribute('data-open-quiz'), 10);
+                if (!isNaN(idx)) openQuizFull(idx);
+                return;
+            }
+        });
+        function switchTab(name) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('tab-active', b.dataset.tab === name));
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            const el = document.getElementById(`tab-${name}`);
+            if (el) el.style.display = '';
+        }
+
+        // State
+        let currentItem = null;
+
+        // History Helpers
+        const HISTORY_KEY = 'aiLearnHistory';
+        const loadHistory = () => JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+        const saveHistory = (items) => localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
+        function addToHistory(entry) {
+            const items = loadHistory();
+            items.unshift(entry);
+            saveHistory(items);
+            renderHistory();
+        }
+        function deleteFromHistory(id) {
+            const items = loadHistory();
+            const idx = items.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            const removed = items.splice(idx, 1)[0];
+            saveHistory(items);
+            renderHistory();
+            showUndo(`تم حذف "${escapeHtml(removed.subject||'عنصر')}"`, ()=>{
+                const list = loadHistory();
+                list.splice(idx, 0, removed);
+                saveHistory(list);
+                renderHistory();
+            });
+        }
+        function clearHistory() {
+            if (!confirm('سيتم حذف السجل بالكامل، هل أنت متأكد؟')) return;
+            const backup = loadHistory();
+            localStorage.removeItem(HISTORY_KEY);
+            renderHistory();
+            showUndo('تم حذف السجل بالكامل', ()=>{ saveHistory(backup); renderHistory(); });
+        }
+        function renderHistory() {
+            const items = loadHistory();
+            const q = (document.getElementById('historySearch')?.value||'').trim();
+            const filtered = q ? items.filter(it => (it.subject||'').includes(q) || (it.level||'').includes(q) || (it.difficulty||'').includes(q)) : items;
+            if (!filtered.length) {
+                historyList.innerHTML = '<div class=\"tag\">لا توجد عناصر بعد</div>';
+                return;
+            }
+            historyList.innerHTML = filtered.map(item => `
+                <div class="history-card">
+                    <div class="history-title">${escapeHtml(item.subject)}</div>
+                    <div class="tags">
+                        <span class="tag"><i class="fa-solid fa-signal"></i> ${item.difficulty}</span>
+                        <span class="tag"><i class="fa-solid fa-layer-group"></i> ${item.level}</span>
+                        <span class="tag"><i class="fa-solid fa-list-ol"></i> ${item.episodes}</span>
+                        <span class="tag"><i class="fa-regular fa-clock"></i> ${new Date(item.createdAt).toLocaleString('ar')}</span>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn btn-secondary" onclick="openHistory('${item.id}')"><i class="fa-solid fa-folder-open"></i> عرض</button>
+                        <button class="btn btn-danger" onclick="deleteFromHistory('${item.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function openHistory(id) {
+            const item = loadHistory().find(x => x.id === id);
+            if (!item) return;
+            currentItem = item;
+            document.getElementById('noResultsCard').style.display = 'none';
+            resultSection.style.display = 'block';
+            if (item.plan) {
+                renderPlan(item.plan);
+                renderEpisodes(item.plan.episodes || []);
+                renderQuizzes(item.quizzes || []);
+            } else if (item.html) {
+                document.getElementById('planContent').innerHTML = item.html;
+                switchTab('plan');
+            }
+            switchView('results');
+            window.scrollTo({ top: resultSection.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        // Episodes control
+        episodesRange.addEventListener('input', () => {
+            episodesValue.textContent = episodesRange.value;
+        });
+        autoMode.addEventListener('change', () => {
+            episodesRange.disabled = autoMode.checked;
+            episodesValue.textContent = autoMode.checked ? 'تلقائي' : episodesRange.value;
+        });
+        // helper button for tips
+        function openTips(){
+            showToast('اكتب هدفاً واضحاً، حدّد المستوى والصعوبة، واختر عدداً مناسباً من الحلقات.', 'info');
+        }
+
+        // Example filler
+        function fillExample() {
+            document.getElementById('subject').value = 'تعلم البرمجة من الصفر حتى بناء أول مشروع ويب';
+            document.getElementById('difficulty').value = 'مبتدئ';
+            document.getElementById('level').value = 'ثانوي';
+            autoMode.checked = true; episodesRange.disabled = true; episodesValue.textContent = 'تلقائي';
+        }
+
+        // Form Submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const subject = document.getElementById('subject').value.trim();
+            const difficulty = document.getElementById('difficulty').value;
+            const level = document.getElementById('level').value;
+            const episodes = autoMode.checked ? 'تلقائي' : episodesRange.value;
+            if (!subject || !difficulty || !level) return;
+            await startGeneration({ subject, difficulty, level, episodes });
+        });
+
+        async function startGeneration({ subject, difficulty, level, episodes }) {
+            // Show overlay
+            overlay.style.display = 'flex';
+            resultSection.style.display = 'none';
+
+            const startTime = Date.now();
+            const estimatedTime = Math.random() * 240000 + 60000; // 1-5 minutes
+
+            const tips = [
+                'حدّد المستوى والصعوبة لتحسين النتيجة.',
+                'اكتب أمثلة لما تريد تعلمه لتخصيص الخطة.',
+                'اضبط عدد الحلقات حسب عمق التعلّم المطلوب.',
+                'اطلب تمارين قصيرة مع حلول مشروحة.'
+            ];
+            let tipIdx = 0;
+            const progressTimer = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const t = Math.min(1, elapsed / estimatedTime);
+                const eased = Math.pow(t, 0.85); // منحنى تقدّم سلس
+                const pct = Math.min(99, Math.floor(eased * 100));
+                progressFill.style.width = pct + '%';
+                if (percentText) percentText.textContent = pct + '%';
+                const remaining = Math.max(0, Math.floor((1 - t) * estimatedTime));
+                const m = Math.floor(remaining / 60000);
+                const s = Math.floor((remaining % 60000) / 1000);
+                timeRemaining.textContent = `الوقت المتبقي: ${m}:${String(s).padStart(2,'0')}`;
+                if (tipText) { tipText.textContent = 'نصيحة: ' + tips[tipIdx % tips.length]; tipIdx++; }
+            }, 1200);
+
+            try {
+                const prompt = createLearningPrompt(subject, difficulty, level, episodes);
+                const content = await postChat({ messages: [
+                    { role: 'system', content: 'أنت مساعد تعليمي ذكي متخصص في إنشاء محتوى تعليمي عالي الجودة باللغة العربية.' },
+                    { role: 'user', content: prompt }
+                ], max_tokens: 2000 });
+
+                // Success UI
+                clearInterval(progressTimer);
+                progressFill.style.width = '100%';
+                timeRemaining.textContent = 'تم الانتهاء!';
+                setTimeout(async () => {
+                    overlay.style.display = 'none';
+                    // Build structured plan if possible
+                    let plan = tryParsePlan(content) || buildPlanFromText(content);
+
+                    // Ensure episodes exist and match desired count if specified
+                    let desiredCount = null;
+                    if (episodes !== 'تلقائي') desiredCount = parseInt(episodes, 10);
+                    if (!plan.episodes || plan.episodes.length === 0 || (desiredCount && plan.episodes.length !== desiredCount)) {
+                        overlay.style.display = 'flex';
+                        timeRemaining.textContent = 'تحسين الحلقات...';
+                        try {
+                            plan.episodes = await refineEpisodes({ subject, difficulty, level, overview: plan.overview, desiredCount });
+                        } catch (e) {
+                            console.warn('Refine episodes failed:', e);
+                            showToast('تعذر تنظيم الحلقات، سيتم عرض الخطة فقط.', 'warn');
+                        } finally {
+                            overlay.style.display = 'none';
+                        }
+                    }
+
+                    currentItem = {
+                        id: crypto.randomUUID(),
+                        subject, difficulty, level, episodes,
+                        plan, quizzes: [], createdAt: Date.now()
+                    };
+                    // Render UI
+                    renderPlan(plan);
+                    renderEpisodes(plan.episodes || []);
+                    renderQuizzes();
+                    document.getElementById('noResultsCard').style.display = 'none';
+                    resultSection.style.display = 'block';
+                    // Save
+                    addToHistory(currentItem);
+                    switchView('results');
+                    window.scrollTo({ top: resultSection.offsetTop - 20, behavior: 'smooth' });
+                }, 600);
+
+            } catch (err) {
+                clearInterval(progressTimer);
+                overlay.style.display = 'none';
+                console.error(err);
+                resultSection.style.display = 'block';
+                const errBox = document.getElementById('planContent');
+                if (errBox) {
+                    errBox.innerHTML = `
+                        <div style="text-align:center; padding: 26px;">
+                            <div class="tag" style="display:inline-flex; align-items:center; gap:8px; background: rgba(255,59,48,0.12); color:#B00020;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                حدث خطأ أثناء التوليد
+                            </div>
+                            <p style="margin-top: 12px; color: var(--text-secondary); white-space: pre-wrap;">${escapeHtml(err.message || 'حدث خطأ غير متوقع')}</p>
+                            <div style="margin-top: 14px; display:flex; gap:10px; justify-content:center;">
+                                <button class="btn btn-primary" onclick="retry()"><i class="fa-solid fa-rotate-right"></i> حاول مجدداً</button>
+                                <button class="btn btn-secondary" onclick="resetForm()">إنشاء جديد</button>
+                            </div>
+                        </div>`;
+                    switchTab('plan');
+                }
+            }
+        }
+
+        function retry() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Parsing and rendering helpers
+        function getJsonFromText(text) {
+            if (!text) return null;
+            const codeBlockMatch = text.match(/```json[\s\S]*?```/i) || text.match(/```[\s\S]*?```/);
+            const inBlock = codeBlockMatch ? codeBlockMatch[0].replace(/```(json)?/gi,'').replace(/```/g,'').trim() : null;
+            const raw = inBlock || text;
+            const first = raw.indexOf('{');
+            const last = raw.lastIndexOf('}');
+            if (first === -1 || last === -1 || last <= first) return null;
+            return raw.slice(first, last + 1);
+        }
+        function tryParsePlan(text) {
+            try {
+                const j = getJsonFromText(text);
+                if (!j) return null;
+                const obj = JSON.parse(j);
+                if (!obj) return null;
+                // Normalize
+                const episodes = Array.isArray(obj.episodes) ? obj.episodes : [];
+                return {
+                    overview: obj.overview || obj.intro || obj.summary || '',
+                    goals: obj.goals || obj.objectives || [],
+                    episodes: episodes.map((e, i) => ({
+                        index: i,
+                        title: e.title || `الحلقة ${i+1}`,
+                        summary: e.summary || e.description || '',
+                        objectives: e.objectives || e.goals || [],
+                        content: e.content || e.body || '',
+                        examples: e.examples || [],
+                        exercises: e.exercises || [],
+                        key_terms: e.key_terms || e.terms || [],
+                        duration_minutes: e.duration_minutes || e.duration || null,
+                        prerequisites: e.prerequisites || []
+                    })),
+                    sources: obj.sources || obj.references || []
+                };
+            } catch { return null; }
+        }
+        function buildPlanFromText(text) {
+            // Fallback: single overview and no structured episodes
+            return { overview: text, goals: [], episodes: [], sources: [] };
+        }
+        function renderPlan(plan) {
+            const el = document.getElementById('planContent');
+            if (!el) return;
+            let html = '';
+            if (plan.overview) html += `<h3>نظرة عامة</h3><div>${renderMarkdown(plan.overview)}</div>`;
+            if (plan.goals && plan.goals.length) {
+                html += '<h3>الأهداف</h3><ul>' + plan.goals.map(g => `<li>${escapeHtml(g)}</li>`).join('') + '</ul>';
+            }
+            if (plan.sources && plan.sources.length) {
+                html += '<h3>المصادر</h3><ul>' + plan.sources.map(s => `<li>${escapeHtml(s)}</li>`).join('') + '</ul>';
+            }
+            el.innerHTML = html || '<div class="tag">لا توجد تفاصيل للخطة</div>';
+            applyHighlight(el);
+            switchTab('plan');
+        }
+        function renderEpisodes(episodes) {
+            const list = document.getElementById('episodesList');
+            if (!list) return;
+            if (!episodes || !episodes.length) {
+                list.innerHTML = '<div class="tag">لم يتم العثور على حلقات منظمة. يمكنك إعادة التوليد مع تحديد عدد الحلقات.</div>';
+                return;
+            }
+            list.innerHTML = episodes.map((ep, i) => `
+                <div class="history-card animate-in" style="animation-delay:${i*40}ms;">
+                    <div class="ep-badge">${i+1}</div>
+                    <div class="history-title">${escapeHtml(ep.title || `الحلقة ${i+1}`)}</div>
+                    <div class="tags">
+                        <span class="tag"><i class="fa-regular fa-circle-question"></i> ${ep.objectives?.length || 0} أهداف</span>
+                    </div>
+                    <div style="color: var(--text-secondary); font-size:.95rem;">${escapeHtml((ep.summary || '').slice(0,160))}...</div>
+                    <div class="history-actions">
+                        <button class="btn btn-secondary" onclick="openEpisode(${i})"><i class="fa-solid fa-folder-open"></i> فتح</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function openEpisode(index) {
+            if (!currentItem?.plan?.episodes?.[index]) return;
+            const ep = currentItem.plan.episodes[index];
+            document.getElementById('episodeModalTitle').textContent = ep.title || `الحلقة ${index+1}`;
+            const parts = [];
+            if (ep.summary) parts.push(`<div class="section-block">${renderMarkdown(ep.summary)}</div>`);
+            if (ep.objectives?.length) parts.push('<div class="section-block"><h4>الأهداف</h4><ul>' + ep.objectives.map(o => `<li>${escapeHtml(o)}</li>`).join('') + '</ul></div>');
+            const metaBits = [];
+            if (ep.duration_minutes) metaBits.push(`<span class=\"tag\"><i class=\"fa-regular fa-clock\"></i> ${ep.duration_minutes} دقيقة</span>`);
+            if (ep.prerequisites?.length) metaBits.push(`<span class=\"tag\"><i class=\"fa-solid fa-list-check\"></i> متطلبات: ${escapeHtml(ep.prerequisites.join('، '))}</span>`);
+            if (metaBits.length) parts.push('<div class="section-block">' + metaBits.join(' ') + '</div>');
+            if (ep.content) parts.push('<div class="section-block"><h4>الشرح</h4><div>' + renderMarkdown(ep.content) + '</div></div>');
+            if (ep.key_terms?.length) parts.push('<div class="section-block"><h4>مصطلحات أساسية</h4><div class="terms">' + ep.key_terms.map(t => `<span class="term">${escapeHtml(t)}</span>`).join('') + '</div></div>');
+            if (ep.examples?.length) parts.push('<div class="section-block"><h4>أمثلة</h4><ul>' + ep.examples.map(x => `<li>${escapeHtml(x)}</li>`).join('') + '</ul></div>');
+            if (ep.exercises?.length) parts.push('<div class="section-block"><h4>تمارين</h4><ul>' + ep.exercises.map(x => `<li>${escapeHtml(x)}</li>`).join('') + '</ul></div>');
+            const contentEl = document.getElementById('episodeModalContent');
+            // Notes UI
+            parts.push(`<div class=\"section-block\"><h4>ملاحظاتك</h4><textarea id=\"episodeNote\" class=\"input\" placeholder=\"أضف ملاحظاتك الشخصية لهذه الحلقة...\">${escapeHtml(ep.userNote||'')}</textarea><div style=\"display:flex; gap:8px; justify-content:flex-end; margin-top:8px;\"><button class=\"btn btn-secondary\" onclick=\"saveEpisodeNote(${index})\"><i class=\"fa-solid fa-save\"></i> حفظ الملاحظة</button></div></div>`);
+            contentEl.innerHTML = parts.join('');
+            applyHighlight(contentEl);
+            const btn = document.getElementById('episodeQuizBtn');
+            btn.onclick = () => generateEpisodeQuiz(index);
+            const modal = document.getElementById('episodeModal');
+            modal.style.display = 'flex';
+            requestAnimationFrame(()=> modal.classList.add('modal-show'));
+        }
+        function closeEpisodeModal() {
+            const modal = document.getElementById('episodeModal');
+            modal.classList.remove('modal-show');
+            modal.classList.add('modal-hide');
+            setTimeout(()=>{ modal.style.display = 'none'; modal.classList.remove('modal-hide'); }, 180);
+        }
+        // Link confirm controller
+        let _pendingLink = null;
+        function showLinkConfirm(url){
+            _pendingLink = url;
+            const urlEl = document.getElementById('linkConfirmUrl'); if (urlEl) urlEl.textContent = url;
+            const modal = document.getElementById('linkConfirmModal');
+            if (modal) { modal.style.display = 'flex'; requestAnimationFrame(()=> modal.classList.add('modal-show')); }
+        }
+        function closeLinkConfirm(){
+            const modal = document.getElementById('linkConfirmModal');
+            if (modal) {
+                modal.classList.remove('modal-show');
+                modal.classList.add('modal-hide');
+                setTimeout(()=>{ modal.style.display = 'none'; modal.classList.remove('modal-hide'); }, 180);
+            }
+            _pendingLink = null;
+        }
+        function openLinkNew(){ if (_pendingLink) window.open(_pendingLink, '_blank', 'noopener,noreferrer'); closeLinkConfirm(); }
+        function openLinkSame(){ if (_pendingLink) window.open(_pendingLink, '_self'); closeLinkConfirm(); }
+
+        async function generateEpisodeQuiz(index) {
+            if (!currentItem?.plan?.episodes?.[index]) return;
+            overlay.style.display = 'flex';
+            const ep = currentItem.plan.episodes[index];
+            const prompt = `صمم اختباراً من 6 أسئلة متعددة الخيارات حول الحلقة التالية. \n` +
+                `أعد الإجابة في JSON بالصيغة: { "questions": [ { "q": string, "choices": string[], "answer": number, "explanation": string } ] }\n\n` +
+                `عنوان الحلقة: ${ep.title}\nملخص: ${ep.summary}\nأهداف: ${(ep.objectives||[]).join('، ')}\nشرح: ${ep.content?.slice(0,1000) || ''}`;
+            try {
+                const content = await postChat({ messages: [
+                    { role: 'system', content: 'أنت منشئ اختبارات ذكي. أجب بصيغة JSON فقط.' },
+                    { role: 'user', content: prompt }
+                ], max_tokens: 900 });
+                let data = null; try { data = JSON.parse(getJsonFromText(content) || '{}'); } catch {}
+                const questions = data?.questions || [];
+                if (!questions.length) throw new Error('تعذر توليد أسئلة صالحة.');
+                currentItem.quizzes = currentItem.quizzes || [];
+                currentItem.quizzes.push({ type: 'episode', index, title: ep.title, questions });
+                saveBackToHistory(currentItem);
+                renderQuizzes();
+            } catch (e) {
+                alert('حدث خطأ أثناء توليد اختبار الحلقة: ' + (e.message||e));
+            } finally {
+                overlay.style.display = 'none';
+            }
+        }
+        async function generateFinalExam() {
+            if (!currentItem?.plan?.episodes?.length) { alert('لا توجد حلقات كافية لتوليد اختبار نهائي.'); return; }
+            overlay.style.display = 'flex';
+            const overview = currentItem.plan.overview || '';
+            const titles = currentItem.plan.episodes.map((e,i)=>`${i+1}. ${e.title}`).join('\n');
+            const prompt = `أنشئ اختباراً نهائياً شاملاً من 12 سؤالاً متعدد الخيارات يغطي جميع الحلقات التالية. \n`+
+                `أعد JSON فقط: { "questions": [ { "q": string, "choices": string[], "answer": number, "explanation": string } ] }\n\n`+
+                `نظرة عامة: ${overview}\nالحلقات:\n${titles}`;
+            try {
+                const content = await postChat({ messages: [
+                    { role:'system', content:'أجب بصيغة JSON فقط.' },
+                    { role:'user', content: prompt }
+                ], max_tokens: 1100 });
+                let data = null; try { data = JSON.parse(getJsonFromText(content) || '{}'); } catch {}
+                const questions = data?.questions || [];
+                if (!questions.length) throw new Error('تعذر توليد الاختبار النهائي.');
+                currentItem.quizzes = currentItem.quizzes || [];
+                currentItem.quizzes = currentItem.quizzes.filter(q => q.type !== 'final');
+                currentItem.quizzes.push({ type: 'final', title: 'الاختبار النهائي', questions });
+                saveBackToHistory(currentItem);
+                renderQuizzes();
+                switchTab('quizzes');
+            } catch (e) {
+                alert('حدث خطأ أثناء توليد الاختبار النهائي: ' + (e.message||e));
+            } finally {
+                overlay.style.display = 'none';
+            }
+        }
+        function renderQuizzes() {
+            const box = document.getElementById('quizzesContent');
+            if (!box) return;
+            const quizzes = currentItem?.quizzes || [];
+            if (!quizzes.length) { box.innerHTML = '<div class=\"tag\">لا توجد اختبارات بعد</div>'; return; }
+            box.innerHTML = `<div class=\"quiz-grid\">${quizzes.map((q, i) => renderQuizCard(q, i)).join('')}</div>`;
+        }
+        function renderQuizCard(q, qi) {
+            const title = q.type === 'final' ? 'الاختبار النهائي' : `اختبار الحلقة: ${escapeHtml(q.title || '')}`;
+            const started = Array.isArray(q.userAnswers);
+            const meta = `<div class="quiz-meta"><span><i class="fa-solid fa-list-ol"></i> ${q.questions?.length||0} سؤال</span>${q.type!=='final'?`<span><i class="fa-solid fa-clapperboard"></i> حلقة</span>`:''}</div>`;
+            const label = started ? 'متابعة الاختبار' : 'بدء الاختبار';
+            return `
+                <div class="quiz-card">
+                    <h4>${title}</h4>
+                    ${meta}
+                    <div id="quiz-${qi}">
+                        <button class="btn btn-primary" data-open-quiz="${qi}"><i class="fa-solid fa-play"></i> ${label}</button>
+                    </div>
+                </div>
+            `;
+        }
+        function startQuiz(qi) {
+            const q = currentItem?.quizzes?.[qi]; if (!q) return;
+            q.userAnswers = new Array(q.questions.length).fill(null);
+            const container = document.getElementById(`quiz-${qi}`);
+            container.innerHTML = renderQuizQuestions(q, qi);
+        }
+        let quizFullIndex = null;
+        function openQuizFull(qi) {
+            const q = currentItem?.quizzes?.[qi]; if (!q) return;
+            quizFullIndex = qi;
+            if (!Array.isArray(q.userAnswers)) q.userAnswers = new Array(q.questions.length).fill(null);
+            const title = q.type === 'final' ? 'الاختبار النهائي' : `اختبار الحلقة: ${q.title || ''}`;
+            const tEl = document.getElementById('quizFullTitle'); if (tEl) tEl.textContent = title;
+            const container = document.getElementById('quizFullContent'); if (container) container.innerHTML = renderQuizQuestions(q, qi);
+            const full = document.getElementById('quizFull'); if (full) {
+                full.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                requestAnimationFrame(()=> full.classList.add('show'));
+            }
+        }
+        function closeQuizFull() {
+            const full = document.getElementById('quizFull'); if (full) {
+                full.classList.remove('show');
+                setTimeout(()=>{ full.style.display = 'none'; document.body.style.overflow = ''; }, 180);
+            }
+            quizFullIndex = null;
+        }
+        function renderQuizQuestions(q, qi) {
+            return q.questions.map((qa, i) => {
+                const name = `q_${qi}_${i}`;
+                const options = (qa.choices||[]).map((c, ci) => `
+                    <label data-ci="${ci}">
+                        <input type="radio" name="${name}" value="${ci}" onchange="selectAnswer(${qi}, ${i}, ${ci})">
+                        <span>${escapeHtml(c)}</span>
+                    </label>
+                `).join('');
+                return `
+                    <div class="quiz-question" id="quiz-${qi}-q-${i}">
+                        <div><strong>${i+1}. ${escapeHtml(qa.q||'')}</strong></div>
+                        <div class="quiz-options">${options}</div>
+                    </div>
+                `;
+            }).join('') + `<div style="display:flex; gap:10px; justify-content:flex-end; margin-top:10px;">
+                <button class="btn btn-secondary" onclick="resetQuiz(${qi})"><i class=\"fa-solid fa-rotate\"></i> إعادة</button>
+                <button class="btn btn-primary" onclick="submitQuiz(${qi})"><i class=\"fa-solid fa-check\"></i> تحقق من الإجابات</button>
+            </div>`;
+        }
+        function selectAnswer(qi, i, ci) {
+            const q = currentItem?.quizzes?.[qi]; if (!q) return;
+            q.userAnswers = q.userAnswers || new Array(q.questions.length).fill(null);
+            q.userAnswers[i] = ci;
+        }
+        function resetQuiz(qi) {
+            const q = currentItem?.quizzes?.[qi]; if (!q) return;
+            q.userAnswers = new Array(q.questions.length).fill(null);
+            const isFull = quizFullIndex === qi && document.getElementById('quizFull')?.style.display === 'block';
+            const container = isFull ? document.getElementById('quizFullContent') : document.getElementById(`quiz-${qi}`);
+            if (container) container.innerHTML = renderQuizQuestions(q, qi);
+        }
+        function submitQuiz(qi) {
+            const q = currentItem?.quizzes?.[qi]; if (!q) return;
+            const answers = q.userAnswers || [];
+            let correct = 0;
+            (q.questions||[]).forEach((qa, i) => {
+                const chosen = answers[i];
+                const correctIndex = qa.answer;
+                const root = document.getElementById(`quiz-${qi}-q-${i}`);
+                if (!root) return;
+                const labels = root.querySelectorAll('label');
+                labels.forEach(l => l.classList.remove('option-correct', 'option-wrong'));
+                if (typeof chosen === 'number') {
+                    if (chosen === correctIndex) {
+                        labels[chosen]?.classList.add('option-correct');
+                        correct++;
+                    } else {
+                        labels[chosen]?.classList.add('option-wrong');
+                        labels[correctIndex]?.classList.add('option-correct');
+                    }
+                } else {
+                    labels[correctIndex]?.classList.add('option-correct');
+                }
+            });
+            showToast(`نتيجة الاختبار: ${correct} / ${q.questions.length}`);
+            // If opened in fullscreen, keep showing results there.
+            if (quizFullIndex === qi) {
+                // no-op: results already rendered in place.
+            }
+        }
+        function saveBackToHistory(item) {
+            const items = loadHistory();
+            const idx = items.findIndex(x => x.id === item.id);
+            if (idx !== -1) { items[idx] = item; saveHistory(items); }
+        }
+
+        function createLearningPrompt(subject, difficulty, level, episodes) {
+            const epText = episodes === 'تلقائي'
+                ? 'حدد عدداً مناسباً من الحلقات بين 6 و 12 بما يتوافق مع المستوى.'
+                : `اجعل عدد الحلقات يساوي ${episodes} بالضبط.`;
+            return (
+                `أنت مخطط مناهج تعليمية. أجب بصيغة JSON فقط دون أي نص خارجي أو شروح.\n` +
+                `اتبع البنية التالية بدقة: {\n` +
+                `  \"overview\": string,  // نظرة عامة تتضمن المتطلبات المسبقة ومخرجات التعلم العامة\n` +
+                `  \"goals\": string[],   // أهداف قابلة للقياس بأفعال قوية (بلوم)\n` +
+                `  \"episodes\": [\n` +
+                `    {\n` +
+                `      \"title\": string,\n` +
+                `      \"summary\": string,\n` +
+                `      \"objectives\": string[],\n` +
+                `      \"content\": string,      // استخدم كتل كود مسوّرة مع وسم اللغة مثل \`\`\`js\n` +
+                `      \"examples\": string[],\n` +
+                `      \"exercises\": string[],\n` +
+                `      \"key_terms\": string[],  // ضع المصطلحات والرموز البرمجية بين backticks مثل \"\`map()\`\"\n` +
+                `      \"duration_minutes\": number, // 20-60\n` +
+                `      \"prerequisites\": string[]\n` +
+                `    }\n` +
+                `  ],\n` +
+                `  \"sources\": string[]\n` +
+                `}\n\n` +
+                `الموضوع: ${subject}\n` +
+                `مستوى الصعوبة: ${difficulty}\n` +
+                `المستوى التعليمي: ${level}\n` +
+                `${epText}\n\n` +
+                `لغة الإخراج: العربية الفصحى. استخدم تنسيقات Markdown بوضوح، وعلّم المصطلحات البرمجية بين backticks، واذكر كتل كود بلغة صريحة (\`\`\`js, \`\`\`python, ...).`
+            );
+        }
+
+        function renderMarkdown(md) {
+            try {
+                const raw = marked.parse(md || '', { breaks: true });
+                return DOMPurify.sanitize(raw);
+            } catch { return escapeHtml(md || ''); }
+        }
+        function applyHighlight(root) {
+            if (!root) return;
+            root.querySelectorAll('pre code').forEach((block) => {
+                try { hljs.highlightElement(block); } catch {}
+            });
+            addCopyButtons(root);
+            hookLinks(root);
+        }
+        function addCopyButtons(root){
+            root.querySelectorAll('pre').forEach((pre)=>{
+                if (pre.closest('.code-block')) return;
+                const code = pre.querySelector('code');
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-block';
+                const head = document.createElement('div');
+                head.className = 'code-head';
+                const langEl = document.createElement('span');
+                langEl.className = 'code-lang';
+                langEl.textContent = getCodeLangLabel(code);
+                const btn = document.createElement('button');
+                btn.className = 'code-copy';
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i><span>نسخ</span>';
+                btn.addEventListener('click', ()=>{
+                    const codeText = pre.querySelector('code')?.innerText || '';
+                    navigator.clipboard.writeText(codeText).then(()=>{
+                        btn.classList.add('copied');
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i><span>تم النسخ</span>';
+                        setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML = '<i class="fa-regular fa-copy"></i><span>نسخ</span>'; }, 1500);
+                    }).catch(()=>showToast('تعذر نسخ الكود','error'));
+                });
+                head.appendChild(langEl);
+                head.appendChild(btn);
+                const content = document.createElement('div');
+                content.className = 'code-content';
+                pre.parentNode.insertBefore(wrapper, pre);
+                content.appendChild(pre);
+                wrapper.appendChild(head);
+                wrapper.appendChild(content);
+            });
+        }
+        function hookLinks(root){
+            root.querySelectorAll('a[href]').forEach(a => {
+                if (a.dataset.hooked === '1') return;
+                a.dataset.hooked = '1';
+                a.addEventListener('click', (e)=>{
+                    const href = a.getAttribute('href');
+                    if (!href || href.startsWith('#')) return; // allow anchors
+                    e.preventDefault();
+                    showLinkConfirm(href);
+                });
+            });
+        }
+        function getCodeLangLabel(codeEl){
+            try {
+                const cls = codeEl?.className || '';
+                const m = cls.match(/language-([a-zA-Z0-9+#]+)/) || cls.match(/lang-([a-zA-Z0-9+#]+)/);
+                if (m) {
+                    let l = m[1];
+                    const map = { js:'JavaScript', ts:'TypeScript', py:'Python', sh:'Shell', bash:'Bash', csharp:'C#', cs:'C#', cpp:'C++', html:'HTML', css:'CSS', json:'JSON', yaml:'YAML', md:'Markdown' };
+                    const key = l.toLowerCase();
+                    return map[key] || l.toUpperCase();
+                }
+            } catch {}
+            return 'CODE';
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+        function showUndo(msg, onUndo){
+            const el = document.getElementById('actionToast'); if (!el) return;
+            el.innerHTML = `${msg} <button class="btn btn-secondary" style="padding:6px 10px; margin-inline-start:8px;" onclick="(${onUndo.toString()})(); this.parentElement.classList.remove('toast-show');">تراجع</button>`;
+            el.classList.add('toast-show');
+            clearTimeout(window._actionToastTimer);
+            window._actionToastTimer = setTimeout(()=> el.classList.remove('toast-show'), 4000);
+        }
+
+        function resetForm() {
+            document.getElementById('subject').value = '';
+            document.getElementById('difficulty').value = '';
+            document.getElementById('level').value = '';
+            autoMode.checked = true; episodesRange.disabled = true; episodesValue.textContent = 'تلقائي';
+            resultSection.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Chat helper
+        async function postChat({ messages, max_tokens = 1600 }) {
+            // Hide API key in logs and avoid exposing it
+            const headers = { 'Content-Type': 'application/json' };
+            if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
+            // Attempt 1
+            let res = await fetch(CHAT_URL, { method: 'POST', headers, body: JSON.stringify({ model: MODEL, messages, max_tokens }) });
+            let text = await res.text();
+            let data = null; try { data = JSON.parse(text); } catch {}
+            if (!res.ok) {
+                // Attempt 2: simplify payload and reduce tokens
+                const flat = messages.map(m => `${m.role === 'system' ? 'تعليمات:' : 'طلب:'} ${m.content}`).join('\n\n');
+                res = await fetch(CHAT_URL, { method: 'POST', headers, body: JSON.stringify({ model: MODEL, messages: [{ role:'user', content: flat }], max_tokens: Math.min(800, Math.floor(max_tokens/2)) }) });
+                text = await res.text(); data = null; try { data = JSON.parse(text); } catch {}
+                if (!res.ok) { const msg = data?.error?.message || text || 'فشل الطلب.'; throw new Error(msg); }
+            }
+            const content = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || '';
+            if (!content) throw new Error('استجابة غير صالحة.');
+            return content;
+        }
+
+        async function postChatWithAbort({ messages, max_tokens = 1600, signal }) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
+            // attempt 1
+            let res = await fetch(CHAT_URL, { method:'POST', headers, body: JSON.stringify({ model: MODEL, messages, max_tokens }), signal });
+            let text = await res.text();
+            let data = null; try { data = JSON.parse(text); } catch {}
+            if (!res.ok) {
+                const flat = messages.map(m => `${m.role === 'system' ? 'تعليمات:' : 'طلب:'} ${m.content}`).join('\n\n');
+                res = await fetch(CHAT_URL, { method:'POST', headers, body: JSON.stringify({ model: MODEL, messages:[{role:'user', content: flat}], max_tokens: Math.min(800, Math.floor(max_tokens/2)) }), signal });
+                text = await res.text(); data = null; try { data = JSON.parse(text); } catch {}
+                if (!res.ok) throw new Error(data?.error?.message || text || 'فشل الطلب.');
+            }
+            const content = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || '';
+            if (!content) throw new Error('استجابة غير صالحة.');
+            return content;
+        }
+
+        async function refineEpisodes({ subject, difficulty, level, overview, desiredCount }) {
+            const countInstr = desiredCount ? `اجعل طول المصفوفة ${desiredCount} بالضبط.` : 'اختر عدداً مناسباً بين 6 و 12.';
+            const prompt = (
+                `حسّن تنظيم الحلقات بصيغة JSON فقط دون أي نص خارجي.\n`+
+                `أعد البنية: { \"episodes\": [ { \"title\": string, \"summary\": string, \"objectives\": string[], \"content\": string, \"examples\": string[], \"exercises\": string[], \"key_terms\": string[], \"duration_minutes\": number, \"prerequisites\": string[] } ] }\n`+
+                `${countInstr}\n`+
+                `التوجيهات: استخدم العربية الفصحى، علّم المصطلحات البرمجية بين backticks، واستخدم كتل كود مع وسم اللغة (\`\`\`js, \`\`\`python, ...).\n\n`+
+                `الموضوع: ${subject}\n`+
+                `المستوى: ${level}\n`+
+                `الصعوبة: ${difficulty}\n`+
+                `نظرة عامة موجزة: ${overview?.slice(0, 800) || ''}`
+            );
+            const content = await postChat({ messages: [
+                { role: 'system', content: 'أجب بصيغة JSON فقط.' },
+                { role: 'user', content: prompt }
+            ], max_tokens: 2200 });
+            const json = getJsonFromText(content) || content;
+            const obj = JSON.parse(json);
+            if (!Array.isArray(obj?.episodes) || !obj.episodes.length) throw new Error('لم يتم الحصول على حلقات.');
+            return obj.episodes.map((e, i) => ({
+                index: i,
+                title: e.title || `الحلقة ${i+1}`,
+                summary: e.summary || '',
+                objectives: e.objectives || [],
+                content: e.content || '',
+                examples: e.examples || [],
+                exercises: e.exercises || [],
+                key_terms: e.key_terms || e.terms || [],
+                duration_minutes: e.duration_minutes || e.duration || null,
+                prerequisites: e.prerequisites || []
+            }));
+        }
+
+        // Copy/Download
+        function planToMarkdown(plan) {
+            let md = '';
+            if (plan.overview) md += `# الخطة التعليمية\n\n${plan.overview}\n\n`;
+            if (plan.goals?.length) {
+                md += '## الأهداف\n' + plan.goals.map(g => `- ${g}`).join('\n') + '\n\n';
+            }
+            if (plan.episodes?.length) {
+                md += '## الحلقات\n';
+                plan.episodes.forEach((e, i) => {
+                    md += `\n### الحلقة ${i+1}: ${e.title}\n\n`;
+                    if (e.summary) md += `${e.summary}\n\n`;
+                    if (e.objectives?.length) md += '#### الأهداف\n' + e.objectives.map(o => `- ${o}`).join('\n') + '\n\n';
+                    if (e.content) md += '#### الشرح\n' + e.content + '\n\n';
+                    if (e.examples?.length) md += '#### أمثلة\n' + e.examples.map(x => `- ${x}`).join('\n') + '\n\n';
+                    if (e.exercises?.length) md += '#### تمارين\n' + e.exercises.map(x => `- ${x}`).join('\n') + '\n\n';
+                });
+            }
+            if (plan.sources?.length) md += '## المصادر\n' + plan.sources.map(s => `- ${s}`).join('\n') + '\n';
+            return md.trim();
+        }
+        function copyPlanMarkdown() {
+            if (!currentItem?.plan) { showToast('لا توجد خطة لنسخها', 'warn'); return; }
+            const md = planToMarkdown(currentItem.plan);
+            navigator.clipboard.writeText(md).then(()=>showToast('تم نسخ Markdown')).catch(()=>showToast('تعذر النسخ', 'error'));
+        }
+        function downloadPlanMarkdown() {
+            if (!currentItem?.plan) { showToast('لا توجد خطة للتنزيل', 'warn'); return; }
+            const md = planToMarkdown(currentItem.plan);
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${(currentItem.subject||'plan').replace(/\s+/g,'_')}.md`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+        function exportPlanJson(){
+            if (!currentItem?.plan) { showToast('لا توجد خطة للتصدير', 'warn'); return; }
+            const blob = new Blob([JSON.stringify(currentItem.plan, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${(currentItem.subject||'plan').replace(/\s+/g,'_')}.json`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+        function openPlanImport(){ document.getElementById('planJsonFile')?.click(); }
+        function onPlanImport(e){
+            const file = e.target.files?.[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const plan = JSON.parse(reader.result);
+                    currentItem = currentItem || { id: crypto.randomUUID(), subject: plan.title||'مستورد', level:'', difficulty:'', episodes:'تلقائي', createdAt: Date.now(), quizzes: [] };
+                    currentItem.plan = plan;
+                    addToHistory(currentItem);
+                    renderPlan(plan); renderEpisodes(plan.episodes||[]); renderQuizzes();
+                    document.getElementById('noResultsCard').style.display = 'none';
+                    resultSection.style.display = 'block';
+                    switchView('results');
+                } catch (err) { showToast('ملف غير صالح', 'error'); }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+        function printPlan(){
+            const el = document.getElementById('planContent'); if (!el) return;
+            const w = window.open('', '_blank');
+            w.document.write(`<html dir="rtl"><head><title>طباعة الخطة</title></head><body>${el.innerHTML}</body></html>`);
+            w.document.close(); w.focus(); w.print(); w.close();
+        }
+        async function improvePlan(){
+            if (!currentItem?.plan?.overview) { showToast('لا توجد خطة لتحسينها', 'warn'); return; }
+            overlay.style.display = 'flex';
+            try {
+                const prompt = `حسّن وضوح النص التالي بالعربية وحافظ على المعنى:\n\n${currentItem.plan.overview}`;
+                const content = await postChat({ messages:[{ role:'user', content: prompt }], max_tokens: 600 });
+                currentItem.plan.overview = content;
+                saveBackToHistory(currentItem);
+                renderPlan(currentItem.plan);
+                showToast('تم تحسين الخطة');
+            } catch(e){ showToast('تعذر تحسين الخطة','error'); } finally { overlay.style.display='none'; }
+        }
+        function createMicrolearning(){
+            if (!currentItem?.plan?.episodes?.length) { showToast('لا توجد حلقات كافية','warn'); return; }
+            const eps = currentItem.plan.episodes.map((e,i)=>`يوم ${i+1}: ${e.title}`).join('\n');
+            const md = `# جلسات Microlearning لمدة ${currentItem.plan.episodes.length} يومًا\n\n`+eps;
+            navigator.clipboard.writeText(md).then(()=>showToast('تم نسخ الجدولة')).catch(()=>showToast('تعذر النسخ','error'));
+        }
+        async function exportEpisodesPDF() {
+            if (!currentItem?.plan?.episodes?.length) { showToast('لا توجد حلقات لتصديرها', 'warn'); return; }
+            const container = document.createElement('div');
+            container.style.padding = '16px';
+            container.style.direction = 'rtl';
+            const episodesHtml = currentItem.plan.episodes.map((e,i)=>`<h2 style="color:#007AFF;">الحلقة ${i+1}: ${escapeHtml(e.title||'بدون عنوان')}</h2>`+
+                `<div>${renderMarkdown(e.summary||'')}</div>`+
+                (e.objectives?.length? `<h3>الأهداف</h3><ul>${e.objectives.map(o=>`<li>${escapeHtml(o)}</li>`).join('')}</ul>`:'' )+
+                (e.content? `<h3>الشرح</h3><div>${renderMarkdown(e.content)}</div>`:'' )+
+                (e.examples?.length? `<h3>أمثلة</h3><ul>${e.examples.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:'' )+
+                (e.exercises?.length? `<h3>تمارين</h3><ul>${e.exercises.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:'' )
+            ).join('<div style="page-break-after:always;"></div>');
+            container.innerHTML = `<h1 style="text-align:center;">خطة الدورة: ${escapeHtml(currentItem.subject||'')}</h1>` + episodesHtml;
+            document.body.appendChild(container);
+            try {
+                await html2pdf().set({ margin: 10, filename: `${(currentItem.subject||'episodes').replace(/\s+/g,'_')}.pdf`, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(container).save();
+            } catch (e) {
+                showToast('تعذر إنشاء PDF: ' + (e.message||e), 'error');
+            } finally {
+                document.body.removeChild(container);
+            }
+        }
+
+        // Toast helper
+        let toastTimer = null;
+        function showToast(msg, type='info') {
+            const el = document.getElementById('toast'); if (!el) return;
+            el.textContent = msg;
+            el.style.background = type==='error' ? 'rgba(255,59,48,0.9)' : type==='warn' ? 'rgba(255,149,0,0.9)' : 'rgba(0,0,0,0.85)';
+            el.classList.add('toast-show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(()=> el.classList.remove('toast-show'), 2500);
+        }
+
+        // Persist form
+        const FORM_KEY = 'aiLearnForm';
+        function saveForm() {
+            const data = {
+                subject: document.getElementById('subject').value,
+                difficulty: document.getElementById('difficulty').value,
+                level: document.getElementById('level').value,
+                auto: autoMode.checked,
+                episodes: episodesRange.value
+            };
+            localStorage.setItem(FORM_KEY, JSON.stringify(data));
+        }
+        function loadForm() {
+            try {
+                const d = JSON.parse(localStorage.getItem(FORM_KEY) || '{}');
+                if (d.subject) document.getElementById('subject').value = d.subject;
+                if (d.difficulty) document.getElementById('difficulty').value = d.difficulty;
+                if (d.level) document.getElementById('level').value = d.level;
+                if (typeof d.auto === 'boolean') { autoMode.checked = d.auto; episodesRange.disabled = d.auto; }
+                if (d.episodes) { episodesRange.value = d.episodes; if (!autoMode.checked) episodesValue.textContent = d.episodes; }
+            } catch {}
+        }
+        ['subject','difficulty','level'].forEach(id => document.getElementById(id).addEventListener('change', saveForm));
+        episodesRange.addEventListener('change', saveForm);
+        autoMode.addEventListener('change', saveForm);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (document.getElementById('view-generator')?.classList.contains('view-active')) {
+                    form.requestSubmit();
+                } else if (document.getElementById('view-chat')?.classList.contains('view-active')) {
+                    sendChat();
+                }
+            }
+            if ((e.altKey || e.metaKey) && (e.key.toLowerCase() === 't')) {
+                themeToggle?.click();
+            }
+            if (e.key === 'Escape') {
+                closeEpisodeModal();
+                closeQuizFull();
+                closeLinkConfirm();
+                closeSettings();
+                closeShortcuts();
+            }
+        });
+
+        // Chat state
+        let chatSessions = {}; // { [planId]: [{role, content, ts}] }
+        let chatSelectedRefs = []; // list of plan IDs
+        let chatSettings = { style: 'concise', lang: 'ar', code: false, quizzes: true };
+        let chatAbortController = null;
+        function activePlanId() { return currentItem?.id || 'global'; }
+        function renderChat() {
+            renderRefChips();
+            renderChatSuggestions();
+            if (!chatMessages) return;
+            const id = activePlanId();
+            const msgs = chatSessions[id] || [];
+            if (!msgs.length) { chatMessages.innerHTML = '<div class=\"chat-empty\">لا توجد أي رسائل بعد — ابدأ بطرح سؤالك حول الخطة.</div>'; adjustViewsHeight(); return; }
+            chatMessages.innerHTML = msgs.map(m => {
+                const isUser = m.role === 'user';
+                const time = new Date(m.ts).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' });
+                let contentHtml = renderMarkdown(m.content);
+                let titleHtml = '';
+                if (!isUser) {
+                    const firstLine = (m.content || '').split('\n')[0].trim().slice(0, 64);
+                    if (firstLine) {
+                        titleHtml = `<div class=\"msg-title\">${escapeHtml(firstLine)}</div>`;
+                    }
+                }
+                return `<div class=\"chat-bubble ${isUser?'user':'assistant'}\">\n                    <div class=\"bubble-meta\">${isUser?'أنت':'المساعد'} • ${time}</div>\n                    ${titleHtml}\n                    <div class=\"chat-msg\">${contentHtml}</div>\n                </div>`;
+            }).join('');
+            applyHighlight(chatMessages);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            adjustViewsHeight();
+        }
+        function buildChatSystemPrompt() {
+            const tone = chatSettings.style === 'detailed' ? 'أجب بإسهاب مع أمثلة عند الحاجة.' : 'أجب باختصار ووضوح.';
+            const lang = chatSettings.lang === 'en' ? 'Answer in English.' : 'أجب باللغة العربية الفصحى.';
+            const code = chatSettings.code ? 'استخدم كتل أكواد منسقة عند تقديم أمثلة برمجية.' : '';
+            const quiz = chatSettings.quizzes ? 'يمكنك اقتراح أسئلة قصيرة عند طلب المستخدم.' : '';
+            let ctx = `أنت مساعد ذكي متخصص في شرح الدورة. ${tone} ${lang} ${code} ${quiz}`;
+            const refs = chatSelectedRefs.map(id => loadHistory().find(x=>x.id===id)).filter(Boolean);
+            const plans = [];
+            if (currentItem?.plan) plans.push(currentItem.plan);
+            refs.forEach(r => { if (r.plan) plans.push(r.plan); });
+            if (plans.length) {
+                ctx += '\n\nمراجع الدورة:';
+                plans.slice(0,4).forEach((p,idx) => {
+                    const titles = (p.episodes||[]).slice(0,12).map((e,i)=>`${i+1}. ${e.title}`).join('\n');
+                    ctx += `\n[${idx+1}] ملخص: ${(p.overview||'').slice(0,300)}\nالحلقات:\n${titles}`;
+                });
+            }
+            // If there are attachments, mention we will send summarized content in the next message (already inserted via suggestion)
+            return ctx;
+        }
+        function adjustViewsHeight(){
+            const active = document.querySelector('.view.view-active');
+            if (active && viewsContainer) viewsContainer.style.height = active.scrollHeight + 'px';
+        }
+        function focusChatInput(){ setTimeout(()=> chatInput?.focus(), 50); }
+        function getChatDraftKey(){ return 'aiChatDraft_' + activePlanId(); }
+        function saveChatDraft(){ localStorage.setItem(getChatDraftKey(), chatInput?.value||''); }
+        function loadChatDraft(){ const v = localStorage.getItem(getChatDraftKey()); if (v!=null) chatInput.value = v; }
+        function clearChatDraft(){ localStorage.removeItem(getChatDraftKey()); }
+        function renderChatSuggestions(){
+            const box = document.getElementById('chatSuggestions'); if (!box) return;
+            const suggestions = [
+                'اقترح تمارين قصيرة حول الحلقة الحالية',
+                'ما المهارات المطلوبة للمشروع النهائي؟',
+                'أعطني مثال كود مبسط مع شرح',
+                'اختبرني بسؤال واحد الآن'
+            ];
+            box.innerHTML = suggestions.map(s=>`<span class=\"chip\" onclick=\"insertSuggestion('${s.replace(/'/g, "\\'")}')\">${s}</span>`).join('');
+        }
+        function insertSuggestion(text){ if (!chatInput) return; chatInput.value = text; focusChatInput(); saveChatDraft(); }
+        async function sendChat() {
+            // If already thinking: cancel
+            if (chatAbortController) {
+                chatAbortController.abort();
+                chatAbortController = null;
+                chatThinking.style.display = 'none';
+                chatSend.classList.remove('stop-btn');
+                chatSend.classList.add('send-btn');
+                chatSend.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+                return;
+            }
+            const text = (chatInput?.value||'').trim(); if (!text) return;
+            const id = activePlanId();
+            chatSessions[id] = chatSessions[id] || [];
+            chatSessions[id].push({ role:'user', content: text, ts: Date.now() });
+            chatInput.value = '';
+            clearChatDraft();
+            renderChat();
+            // Enter thinking state
+            chatAbortController = new AbortController();
+            chatThinking.style.display = 'inline-flex';
+            chatSend.classList.remove('send-btn');
+            chatSend.classList.add('stop-btn');
+            chatSend.innerHTML = '<i class="fa-solid fa-stop"></i>';
+            try {
+                const system = buildChatSystemPrompt();
+                const history = (chatSessions[id]||[]).slice(-CHAT_MSG_LIMIT).map(m => ({ role: m.role, content: m.content }));
+                const reply = await postChatWithAbort({ messages: [{ role:'system', content: system }, ...history], max_tokens: 900, signal: chatAbortController.signal });
+                chatSessions[id].push({ role:'assistant', content: reply, ts: Date.now() });
+                renderChat();
+            } catch (e) {
+                if (e.name !== 'AbortError') showToast('تعذر إرسال الرسالة: ' + (e.message||e), 'error');
+            } finally {
+                chatAbortController = null;
+                chatThinking.style.display = 'none';
+                chatSend.classList.remove('stop-btn');
+                chatSend.classList.add('send-btn');
+                chatSend.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+            }
+        }
+        // Bind send button (type=button already prevents accidental submits)
+        chatSend?.addEventListener('click', sendChat);
+        chatInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+        });
+        chatInput?.addEventListener('input', ()=>{ chatInput.style.height = 'auto'; chatInput.style.height = Math.min(chatInput.scrollHeight, 160) + 'px'; saveChatDraft(); });
+        chatRefsBtn?.addEventListener('click', openRefs);
+        document.getElementById('chatFile')?.addEventListener('change', onAttachFile);
+
+        function openRefs(){
+            refsModal.style.display = 'flex';
+            requestAnimationFrame(()=> refsModal.classList.add('modal-show'));
+            // populate list from history
+            const items = loadHistory();
+            if (!items.length) { refsList.innerHTML = '<div class="tag">لا توجد كورسات في السجل.</div>'; return; }
+            refsList.innerHTML = items.map(it => `
+                <label class="history-card" style="cursor:pointer;">
+                    <input type="checkbox" value="${it.id}" ${chatSelectedRefs.includes(it.id)?'checked':''} style="margin-left:8px;">
+                    <div class="history-title">${escapeHtml(it.subject||'بدون عنوان')}</div>
+                    <div class="tags"><span class="tag">${it.level||''}</span><span class="tag">${it.difficulty||''}</span></div>
+                </label>
+            `).join('');
+            // load settings UI
+            document.getElementById('chatStyle').value = chatSettings.style;
+            document.getElementById('chatLang').value = chatSettings.lang;
+            document.getElementById('chatCode').checked = chatSettings.code;
+            document.getElementById('chatQuizzes').checked = chatSettings.quizzes;
+        }
+        function closeRefs(){ refsModal.classList.remove('modal-show'); refsModal.classList.add('modal-hide'); setTimeout(()=>{ refsModal.style.display='none'; refsModal.classList.remove('modal-hide'); },180); }
+        function applyRefs(){
+            const checks = refsList.querySelectorAll('input[type="checkbox"]');
+            chatSelectedRefs = Array.from(checks).filter(c=>c.checked).map(c=>c.value);
+            chatSettings = {
+                style: document.getElementById('chatStyle').value,
+                lang: document.getElementById('chatLang').value,
+                code: document.getElementById('chatCode').checked,
+                quizzes: document.getElementById('chatQuizzes').checked
+            };
+            closeRefs();
+            renderRefChips();
+        }
+        function renderRefChips(){
+            if (!refChips) return;
+            const items = loadHistory();
+            const sel = chatSelectedRefs.map(id => items.find(x=>x.id===id)).filter(Boolean);
+            if (!sel.length) { refChips.innerHTML = ''; return; }
+            refChips.innerHTML = sel.map(s => `<span class="chip">${escapeHtml(s.subject||'مرجع')}<button onclick="removeRef('${s.id}')" aria-label="حذف">&times;</button></span>`).join('');
+        }
+        function removeRef(id){ chatSelectedRefs = chatSelectedRefs.filter(x=>x!==id); renderRefChips(); }
+        // Episode note save
+        function saveEpisodeNote(index){
+            if (!currentItem?.plan?.episodes?.[index]) return;
+            const ta = document.getElementById('episodeNote');
+            currentItem.plan.episodes[index].userNote = ta?.value||'';
+            saveBackToHistory(currentItem);
+            showToast('تم حفظ الملاحظة');
+        }
+        // Chat export & control
+        function clearChat(){ chatSessions[activePlanId()] = []; renderChat(); }
+        function exportChatMarkdown(){
+            const id = activePlanId(); const msgs = chatSessions[id]||[];
+            const md = msgs.map(m=>`### ${m.role==='user'?'أنت':'المساعد'}\n\n${m.content}`).join('\n\n');
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'chat.md'; a.click(); URL.revokeObjectURL(a.href);
+        }
+        function exportChatJson(){
+            const id = activePlanId(); const msgs = chatSessions[id]||[];
+            const blob = new Blob([JSON.stringify(msgs, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'chat.json'; a.click(); URL.revokeObjectURL(a.href);
+        }
+        function onAttachFile(e){
+            const file = e.target.files?.[0]; if (!file) return; const chipBox = document.getElementById('attachmentChips');
+            const chip = document.createElement('span'); chip.className='chip'; chip.textContent = file.name; chip.title = 'سيتم تلخيص محتوى الملف وإرساله';
+            chipBox?.appendChild(chip);
+            const reader = new FileReader(); reader.onload = ()=>{ const text = reader.result.slice(0, 3000); insertSuggestion(`لخص لي هذا الملف:\n\n${text}`); }; reader.readAsText(file);
+            e.target.value = '';
+        }
+        // Settings modal
+        function openSettings(){
+            document.getElementById('settingsApiBase').value = API_BASE;
+            document.getElementById('settingsModel').value = MODEL;
+            document.getElementById('settingsApiKey').value = API_KEY ? '********' : '';
+            document.getElementById('settingsMsgLimit').value = CHAT_MSG_LIMIT;
+            document.getElementById('settingsMsgLimitValue').textContent = String(CHAT_MSG_LIMIT);
+            document.getElementById('settingsThemeAuto').checked = THEME_AUTO;
+            document.getElementById('settingsModal').style.display = 'flex';
+            requestAnimationFrame(()=> document.getElementById('settingsModal').classList.add('modal-show'));
+        }
+        function closeSettings(){ const m = document.getElementById('settingsModal'); m.classList.remove('modal-show'); m.classList.add('modal-hide'); setTimeout(()=>{ m.style.display='none'; m.classList.remove('modal-hide'); },180); }
+        function applySettings(){
+            API_BASE = (document.getElementById('settingsApiBase').value||'').trim() || API_BASE;
+            MODEL = (document.getElementById('settingsModel').value||'').trim() || MODEL;
+            const keyField = document.getElementById('settingsApiKey').value.trim();
+            if (keyField && keyField !== '********') API_KEY = keyField;
+            CHAT_MSG_LIMIT = parseInt(document.getElementById('settingsMsgLimit').value||'12',10);
+            THEME_AUTO = document.getElementById('settingsThemeAuto').checked;
+            CHAT_URL = `${API_BASE}/api/chat`;
+            localStorage.setItem('aiApiBase', API_BASE);
+            localStorage.setItem('aiModel', MODEL);
+            if (keyField && keyField !== '********') localStorage.setItem('aiApiKey', API_KEY);
+            localStorage.setItem('aiChatMsgLimit', String(CHAT_MSG_LIMIT));
+            localStorage.setItem('aiThemeAuto', THEME_AUTO ? '1' : '0');
+            closeSettings();
+            showToast('تم حفظ الإعدادات');
+        }
+        function resetSettings(){
+            localStorage.removeItem('aiApiBase'); localStorage.removeItem('aiModel'); localStorage.removeItem('aiApiKey'); localStorage.removeItem('aiChatMsgLimit'); localStorage.removeItem('aiThemeAuto');
+            API_BASE = window.location.origin; CHAT_URL = `${API_BASE}/api/chat`; MODEL = 'gpt-like'; API_KEY = ''; CHAT_MSG_LIMIT = 12; THEME_AUTO = false;
+            openSettings();
+        }
+        document.getElementById('settingsMsgLimit')?.addEventListener('input', (e)=>{ document.getElementById('settingsMsgLimitValue').textContent = e.target.value; });
+        // Shortcuts modal
+        function openShortcuts(){ const m = document.getElementById('shortcutsModal'); m.style.display='flex'; requestAnimationFrame(()=> m.classList.add('modal-show')); }
+        function closeShortcuts(){ const m = document.getElementById('shortcutsModal'); m.classList.remove('modal-show'); m.classList.add('modal-hide'); setTimeout(()=>{ m.style.display='none'; m.classList.remove('modal-hide'); },180); }
+
+        // Init
+        renderHistory();
+        loadForm();
+        // Drawer wiring
+        document.getElementById('openDrawer')?.addEventListener('click', ()=>{ const d = document.getElementById('advDrawer'); d.style.display='block'; requestAnimationFrame(()=> d.classList.add('drawer-show')); });
+        document.getElementById('closeDrawer')?.addEventListener('click', ()=>{ const d = document.getElementById('advDrawer'); d.classList.remove('drawer-show'); setTimeout(()=> d.style.display='none', 180); });
+        document.getElementById('optCodeRatio')?.addEventListener('input', (e)=>{ document.getElementById('optCodeRatioVal').textContent = e.target.value + '%'; });
+        document.getElementById('resetDrawer')?.addEventListener('click', ()=>{ document.getElementById('optMiniProjects').checked=false; document.getElementById('optHandsOn').checked=true; document.getElementById('optCodeRatio').value=40; document.getElementById('optCodeRatioVal').textContent='40%'; document.getElementById('optTimeframe').value=''; document.getElementById('optPreferredSources').value=''; showToast('تمت استعادة الإعدادات'); });
+        document.getElementById('applyDrawer')?.addEventListener('click', ()=>{ showToast('تم حفظ الإعدادات (تطبيقها اختياري وقت التوليد)'); const d=document.getElementById('advDrawer'); d.classList.remove('drawer-show'); setTimeout(()=> d.style.display='none', 180); });
+        // restore last view and set container height
+        const lastView = localStorage.getItem('aiLearnView') || 'generator';
+        switchView(lastView);
+        if (lastView === 'chat') loadChatDraft();
+        // Ensure results placeholder shows when no data
+        if (!currentItem) {
+            const noCard = document.getElementById('noResultsCard');
+            const res = document.getElementById('resultSection');
+            if (noCard && res) { noCard.style.display = 'block'; res.style.display = 'none'; }
+        }
+        window.addEventListener('resize', () => {
+            const active = document.querySelector('.view.view-active');
+            if (active && viewsContainer) viewsContainer.style.height = active.scrollHeight + 'px';
+        });
+        // Online/offline indicator
+        function updateOnlineStatus(){ if (offlineBadge) offlineBadge.style.display = navigator.onLine ? 'none' : 'inline-flex'; }
+        window.addEventListener('online', updateOnlineStatus); window.addEventListener('offline', updateOnlineStatus); updateOnlineStatus();
+        // Shortcuts & Settings buttons
+        shortcutsBtn?.addEventListener('click', openShortcuts);
+        openSettingsIcon?.addEventListener('click', openSettings);
+        // History search live
+        document.getElementById('historySearch')?.addEventListener('input', renderHistory);
+        // Plan import file input handler
+        planJsonFile?.addEventListener('change', onPlanImport);
+    </script>
+</body>
+</html>
